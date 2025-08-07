@@ -1,0 +1,33 @@
+body {
+    padding: 2rem;
+    background-color: #333;
+    color: whitesmoke;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    font-size: 2rem;
+}
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#testForm { 
+    background-color: #00827f;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: auto;
+    text-align:center;
+}
+
+
+input[type=submit] {
+    font-size: 2rem;
+    background-color: #536878;
+    padding: 1rem;
+    border-radius: 10px;
+}
