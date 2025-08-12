@@ -3,4 +3,4 @@ function isentropic(event) {
   window.location.href = "./pages/isentropic.html";
 }
 
-document.getElementById("calc_selection").addeventListener("submit", isentropic);
+document.getElementById("calc_selection").addEventListener("submit", isentropic);
