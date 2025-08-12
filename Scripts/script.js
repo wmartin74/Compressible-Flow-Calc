@@ -21,10 +21,10 @@ document.querySelectorAll('input[type="submit"]').forEach(button => {
         console.log('Rayleigh button clicked');
         event.preventDefault();
         window.location.href = "./Pages/Rayleigh.html";
-      } else if (this.value === 'Nozzles Regimes') {
+      } else if (this.value === 'Nozzle Regimes') {
         console.log('Nozzle Regims button clicked');
         event.preventDefault();
-        window.location.href = "./Pages/critmach.html";
+        window.location.href = "./Pages/nozzles.html";
       }
     });
   });
