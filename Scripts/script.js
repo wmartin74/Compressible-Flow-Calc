@@ -16,15 +16,15 @@ document.querySelectorAll('input[type="submit"]').forEach(button => {
       } else if (this.value === 'Critical Mach') {
         console.log('Critical Mach button clicked');
         event.preventDefault();
-        window.location.href = "./Pages/critmach.html
+        window.location.href = "./Pages/critmach.html";
       } else if (this.value === 'Rayleigh Flow') {
         console.log('Rayleigh button clicked');
         event.preventDefault();
-        window.location.href = "./Pages/Rayleigh.html
+        window.location.href = "./Pages/Rayleigh.html";
       } else if (this.value === 'Nozzles Regimes') {
         console.log('Nozzle Regims button clicked');
         event.preventDefault();
-        window.location.href = "./Pages/critmach.html
+        window.location.href = "./Pages/critmach.html";
       }
     });
   });
