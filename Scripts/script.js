@@ -1,5 +1,5 @@
 function isentropic(event) {
-  event.preventDefualt();
+  event.preventDefault();
   window.location.href = "./pages/isentropic.html";
 }
 
