@@ -51,7 +51,7 @@ function mach_solver(A_As) {
 //------ Isentropic Runscript ------
 function pulldata() {
     try {
-        const ratioSelection = document.querySelector('input[name="ratio"];checked').value;
+        const ratioSelection = document.querySelector('input[name="ratio"]:checked').value;
         const ratioValue = document.getElementById("inputValue").value;
         return ratioSelection,ratioValue;
     } catch (error) {
