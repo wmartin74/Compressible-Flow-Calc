@@ -59,10 +59,11 @@ function pulldata() {
         window.alert("Please enter a select an option and enter a valid ratio");
         return null;
     }
+}
 
 function runscript(event) {
   event.preventDefault();
-  let ratioSelection,RatioValue = pulldata();
+  let ratioSelection,ratioValue = pulldata();
   console.log("selection: ", ratioSelection);
   console.log("Ratio: ", ratioValue);
   
