@@ -1,6 +1,6 @@
 const gamma = 1.4;
 const PConvert = 1.013e5;
-const 287.05;
+const R = 287.05;
 
 npm install fsolve-js
 
