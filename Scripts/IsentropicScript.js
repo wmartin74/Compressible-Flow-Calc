@@ -63,7 +63,9 @@ function pulldata() {
 
 function runscript(event) {
   event.preventDefault();
-  
+  let ratioSelection,RatioValue = pulldata();
+  console.log("selection: ", ratioSelection);
+  console.log("Ratio: ", ratioValue);
   
   window.location.href = "isentropicResult.html";
 }
