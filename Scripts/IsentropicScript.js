@@ -2,8 +2,6 @@ const gamma = 1.4;
 const PConvert = 1.013e5;
 const R = 287.05;
 
-npm install fsolve-js
-
 //------ Isentropic Functions ------
 function temp_from_mach(Mach,gamma) {
   t0_t = (1+((gamma-1)/2)*Mach**2);
@@ -41,10 +39,11 @@ function mach_from_rho(rho0_rho) {
 }
 
 function mach_solver(A_As) {
-  const fsolve = require('fsolve');
-  const Mach_sub = fsolve(x => 1/x * ((5+x**2)/6)**3-A_As,0.1);
+  const math = require('mathjs');
+  
+  const Mach_sub = math.nsolve(x => 1/x * ((5+x**2)/6)**3-A_As,0.1);
   console.log("Subsonic output: ", Mach_sub);
-  const Mach_super = fsolve(x => 1/x * ((5+x**2)/6)**3-A_As,2);
+  const Mach_super = math.nsolve(x => 1/x * ((5+x**2)/6)**3-A_As,2);
   console.log("Supersonic output: ", Mach_sup);
   return Mach_sub,Mach_sup;
 }
