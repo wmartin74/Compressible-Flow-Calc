@@ -11,6 +11,23 @@
 <body>
     <h1>Isentropic Flow Calculator</h1>
     <form id="form">
+        <p>Select the known ratio:</p>
+        <div>
+            <input type="radio" id="mach" name="ratio" value="mach" checked>
+            <label for="mach">Mach Number (M)</label><br>
+            <input type="radio" id="pressure" name="ratio" value="pressure">
+            <label for="pressure">Pressure Ratio (P/Po)</label><br>
+            <input type="radio" id="temperature" name="ratio" value="temperature">
+            <label for="temperature">Temperature Ratio (T/To)</label><br>
+            <input type="radio" id="density" name="ratio" value="density">
+            <label for="density">Density Ratio (&#120588/&#120588 o)</label><br>
+            <input type="radio" id="area" name="ratio" value="area">
+            <label for="area">Area Ratio (A/A*)</label><br>
+        </div>
+        <div>
+            <p>Enter the selected ratio:</p>
+            <input type="number" id="inputValue" step="any" required>
+        </div>
         <input type="submit" value="Submit Results">
   <a href = "../index.html">Return</a>
   
