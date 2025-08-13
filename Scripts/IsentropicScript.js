@@ -51,9 +51,9 @@ function mach_solver(A_As) {
 //------ Isentropic Runscript ------
 function pulldata() {
     try {
-        var ratioSelection = document.querySelector('input[type="radio"]:checked').value;
+        const ratioSelection = document.querySelector('input[name="ratio"]:checked').value;
         const ratioValue = document.getElementById("inputValue").value;
-        return ratioSelection,ratioValue;
+        return [ratioSelection, ratioValue];
     } catch (error) {
         console.error("Error parsing input:", error);
         window.alert("Please enter a select an option and enter a valid ratio");
@@ -63,7 +63,7 @@ function pulldata() {
 
 function runscript(event) {
   event.preventDefault();
-  let ratioSelection,ratioValue = pulldata();
+  let [ratioSelection, ratioValue] = pulldata();
   console.log("selection: ", ratioSelection);
   console.log("Ratio: ", ratioValue);
   
