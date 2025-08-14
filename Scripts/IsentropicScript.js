@@ -186,19 +186,19 @@ function runscript(event) {
   
   
   results = {
-    Mach: Number.parseFloat(Mach).toFixed(3),
-    T0_T: Number.parseFloat(T0_T).toFixed(4),
-    P0_P: Number.parseFloat(P0_P).toFixed(4),
-    Rho0_Rho: Number.parseFloat(Rho0_Rho).toFixed(4),
-    A_As: Number.parseFloat(A_As).toFixed(4),
-    Mach_sub: Number.parseFloat(Mach_sub).toFixed(3),
-    T0T_sub: Number.parseFloat(T0T_sub).toFixed(4),
-    P0P_sub: Number.parseFloat(P0P_sub).toFixed(4),
-    Rho0Rho_sub: Number.parseFloat(Rho0Rho_sub).toFixed(4),
-    Mach_super: Number.parseFloat(Mach_super).toFixed(3),
-    T0T_super: Number.parseFloat(T0T_super).toFixed(4),
-    P0P_super: Number.parseFloat(P0P_super).toFixed(4),
-    Rho0Rho_super: Number.parseFloat(Rho0Rho_super).toFixed(4)
+    Mach: Mach,
+    T0_T: T0_T,
+    P0_P: P0_P,
+    Rho0_Rho: Rho0_Rho,
+    A_As: A_As,
+    Mach_sub: Mach_sub,
+    T0T_sub: T0T_sub,
+    P0P_sub: P0P_sub,
+    Rho0Rho_sub: Rho0Rho_sub,
+    Mach_super: Mach_super,
+    T0T_super: T0T_super,
+    P0P_super: P0P_super,
+    Rho0Rho_super: Rho0Rho_super
   }
   console.log(results)
   localStorage.setItem("IsentropicAnalysis", JSON.stringify(results));
