@@ -154,6 +154,20 @@ function runscript(event) {
     let Rho0_Rho = null;
   }
 
+  console.log("Mach: ", Mach);
+  console.log("T0_T: ", T0_T);
+  console.log("P0_P: ", P0_P);
+  console.log("Rho0_Rho: ", Rho0_Rho);
+  console.log("A_As: ", A_As);
+  console.log("Mach_sub: ", Mach_sub);
+  console.log("T0T_sub: ", T0T_sub);
+  console.log("P0P_sub: ", P0P_sub);
+  console.log("Rho0Rho_sub: ", Rho0Rho_sub);
+  console.log("Mach_super: ", Mach_super);
+  console.log("T0T_super: ", T0T_super);
+  console.log("P0P_super: ", P0P_super);
+  console.log("Rho0Rho_super: ", Rho0Rho_super);
+  
   results = {
     Mach: Mach.toFixed(3),
     T0_T: T0_T.toFixed(4),
