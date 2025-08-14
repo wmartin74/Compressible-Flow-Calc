@@ -186,7 +186,7 @@ function runscript(event) {
   
   
   results = {
-    Mach: Mach.toFixed(3),
+    Mach: Number.parseFloat(Mach).toFixed(3),
     T0_T: T0_T.toFixed(4),
     P0_P: P0_P.toFixed(4),
     Rho0_Rho: Rho0_Rho.toFixed(4),
