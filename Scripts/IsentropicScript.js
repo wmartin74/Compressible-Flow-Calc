@@ -2,6 +2,30 @@ const gamma = 1.4;
 const PConvert = 1.013e5;
 const R = 287.05;
 
+import { create, all } from 'mathjs'
+
+// create a mathjs instance with configuration
+const config = {
+  relTol: 1e-12,
+  absTol: 1e-15,
+  matrix: 'Matrix',
+  number: 'number',
+  numberFallback: 'number',
+  precision: 64,
+  predictable: false,
+  randomSeed: null
+}
+const math = create(all, config)
+
+// read the applied configuration
+console.log(math.config())
+
+// change the configuration
+math.config({
+  number: 'BigNumber'
+})
+
+
 //------ Isentropic Functions ------
 function temp_from_mach(mach,gamma) {
   t0_t = (1+((gamma-1)/2)*mach**2);
@@ -39,8 +63,7 @@ function mach_from_rho(rho0_rho) {
 }
 
 function mach_solver(a_as) {
-  const math = mathjs;
-  
+
   const mach_sub = math.nsolve(x => 1/x * ((5+x**2)/6)**3-a_as,0.1);
   console.log("Subsonic output: ", mach_sub);
   const mach_super = math.nsolve(x => 1/x * ((5+x**2)/6)**3-a_as,2);
