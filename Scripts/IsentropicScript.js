@@ -39,7 +39,7 @@ function mach_from_rho(rho0_rho) {
 }
 
 function mach_solver(a_as) {
-  const math = require('mathjs');
+  const math = mathjs;
   
   const mach_sub = math.nsolve(x => 1/x * ((5+x**2)/6)**3-a_as,0.1);
   console.log("Subsonic output: ", mach_sub);
