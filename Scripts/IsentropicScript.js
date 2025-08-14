@@ -67,7 +67,7 @@ function runscript(event) {
   console.log("selection: ", ratioSelection);
   console.log("Ratio: ", ratioValue);
 
-  if (ratioSelection == "mach") {
+  if (ratioSelection == mach) {
     
     const Mach = ratioValue;
     const T0_T = temp_from_mach(Mach,gamma);
@@ -84,7 +84,7 @@ function runscript(event) {
     let P0P_super = null;
     let Rho0Rho_super = null;
 
-  } else if (ratioSelection == "pressure") {
+  } else if (ratioSelection == pressure) {
 
     const P0_P = ratioValue;
     const Mach = mach_from_press(P0_P);
@@ -101,7 +101,7 @@ function runscript(event) {
     let P0P_super = null;
     let Rho0Rho_super = null;
     
-  } else if (ratioSelection == "temperature") {
+  } else if (ratioSelection == temperature) {
     
     const T0_T = ratioValue;
     const P0_P = press_from_temp(T0_T);
@@ -118,7 +118,7 @@ function runscript(event) {
     let P0P_super = null;
     let Rho0Rho_super = null;
     
-  } else if (ratioSelection == "density") {
+  } else if (ratioSelection == density) {
 
     const Rho0_Rho = ratioValue;
     const Mach = mach_from_rho(Rho0_Rho);
@@ -135,7 +135,7 @@ function runscript(event) {
     let P0P_super = null;
     let Rho0Rho_super = null;
 
-  } else if (ratioSelection == "area") {
+  } else if (ratioSelection == area) {
 
     const A_As = ratioSelection;
     const [Mach_sub, Mach_super] = mach_solver(A_As);
