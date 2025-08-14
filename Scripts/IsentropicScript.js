@@ -199,8 +199,8 @@ function runscript(event) {
     T0T_super: T0T_super,
     P0P_super: P0P_super,
     Rho0Rho_super: Rho0Rho_super
-  }
-  console.log(results)
+  };
+  console.log(results);
   localStorage.setItem("IsentropicAnalysis", JSON.stringify(results));
   console.log("Results Saved");
   window.location.href = "isentropicResult.html";
