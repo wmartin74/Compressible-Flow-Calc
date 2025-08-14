@@ -185,7 +185,7 @@ function runscript(event) {
 
   
   
-  results = {
+  const results = {
     Mach: Mach,
     T0_T: T0_T,
     P0_P: P0_P,
