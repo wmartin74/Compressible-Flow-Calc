@@ -31,8 +31,8 @@ input[type=radio] {
 
 input[type=submit] {
     font-size: 2rem;
-    color: whitesmoke;
     background-color: #536878;
+    color: whitesmoke;    
     padding: 1rem;
     border-radius: 5px;
 }
