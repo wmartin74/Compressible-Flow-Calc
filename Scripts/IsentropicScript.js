@@ -208,7 +208,7 @@ function runscript(event) {
 
   
   
-  const results = {
+  let results = {
     Mach: Mach,
     T0_T: T0_T,
     P0_P: P0_P,
@@ -223,6 +223,7 @@ function runscript(event) {
     P0P_super: P0P_super,
     Rho0Rho_super: Rho0Rho_super
   };
+
   console.log(results);
   localStorage.setItem("IsentropicAnalysis", JSON.stringify(results));
   console.log("Results Saved");

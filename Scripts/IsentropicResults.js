@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   results = JSON.parse(localStorage.getItem("IsentropicAnalysis"));
-  console.log("Results Loaded")
+  console.log("Results Loaded");
+  console.log(results);
 
   mach.innerHTML = results.Mach;
   t0_t.innerHTML = results.T0_T;
