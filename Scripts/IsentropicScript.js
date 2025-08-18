@@ -2,28 +2,28 @@ const gamma = 1.4;
 const PConvert = 1.013e5;
 const R = 287.05;
 
-import { create, all } from 'mathjs'
+// import { create, all } from 'mathjs'
 
 // create a mathjs instance with configuration
-const config = {
-  relTol: 1e-12,
-  absTol: 1e-15,
-  matrix: 'Matrix',
-  number: 'number',
-  numberFallback: 'number',
-  precision: 64,
-  predictable: false,
-  randomSeed: null
-}
-const math = create(all, config)
+//const config = {
+//  relTol: 1e-12,
+//  absTol: 1e-15,
+//  matrix: 'Matrix',
+//  number: 'number',
+//  numberFallback: 'number',
+//  precision: 64,
+//  predictable: false,
+//  randomSeed: null
+//}
+//const math = create(all, config)
 
 // read the applied configuration
-console.log(math.config())
+//console.log(math.config())
 
 // change the configuration
-math.config({
-  number: 'BigNumber'
-})
+//math.config({
+//  number: 'BigNumber'
+//})
 
 
 //------ Isentropic Functions ------
