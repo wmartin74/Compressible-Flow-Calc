@@ -107,20 +107,20 @@ function runscript(event) {
   
   if (ratioSelection === "mach") {
     
-    let Mach = ratioValue;
-    let T0_T = temp_from_mach(Mach,gamma);
-    let P0_P = press_from_temp(T0_T);
-    let Rho0_Rho = rho_from_temp(T0_T);
-    let A_As = area_from_mach(Mach);
+    Mach = ratioValue;
+    T0_T = temp_from_mach(Mach,gamma);
+    P0_P = press_from_temp(T0_T);
+    Rho0_Rho = rho_from_temp(T0_T);
+    A_As = area_from_mach(Mach);
 
-    let Mach_sub = null;
-    let T0T_sub = null;
-    let P0P_sub = null;
-    let Rho0Rho_sub = null;
-    let Mach_super = null;
-    let T0T_super = null;
-    let P0P_super = null;
-    let Rho0Rho_super = null;
+    Mach_sub = null;
+    T0T_sub = null;
+    P0P_sub = null;
+    Rho0Rho_sub = null;
+    Mach_super = null;
+    T0T_super = null;
+    P0P_super = null;
+    Rho0Rho_super = null;
 
     console.log("Mach: ", Mach);
     console.log("T0_T: ", T0_T);
