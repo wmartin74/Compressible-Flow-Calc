@@ -90,28 +90,28 @@ function runscript(event) {
   console.log("selection: ", ratioSelection);
   console.log("Ratio: ", ratioValue);
 
-  let Mach;
-  let T0_T;
-  let P0_P;
-  let Rho0_Rho;
-  let A_As;
+  let Mach = 0;
+  let T0_T = 0;
+  let P0_P = 0;
+  let Rho0_Rho = 0;
+  let A_As = 0;
 
-  let Mach_sub;
-  let T0T_sub;
-  let P0P_sub;
-  let Rho0Rho_sub;
-  let Mach_super;
-  let T0T_super;
-  let P0P_super;
-  let Rho0Rho_super;
+  let Mach_sub = 0;
+  let T0T_sub= 0;
+  let P0P_sub = 0;
+  let Rho0Rho_sub = 0;
+  let Mach_super = 0;
+  let T0T_super = 0;
+  let P0P_super = 0;
+  let Rho0Rho_super = 0;
   
   if (ratioSelection === "mach") {
     
-    const Mach = ratioValue;
-    const T0_T = temp_from_mach(Mach,gamma);
-    const P0_P = press_from_temp(T0_T);
-    const Rho0_Rho = rho_from_temp(T0_T);
-    const A_As = area_from_mach(Mach);
+    let Mach = ratioValue;
+    let T0_T = temp_from_mach(Mach,gamma);
+    let P0_P = press_from_temp(T0_T);
+    let Rho0_Rho = rho_from_temp(T0_T);
+    let A_As = area_from_mach(Mach);
 
     let Mach_sub = null;
     let T0T_sub = null;
@@ -138,11 +138,11 @@ function runscript(event) {
 
   } else if (ratioSelection === "pressure") {
 
-    const P0_P = ratioValue;
-    const Mach = mach_from_press(P0_P);
-    const T0_T = temp_from_mach(Mach, gamma);
-    const Rho0_Rho = rho_from_temp(T0_T);
-    const A_As = area_from_mach(Mach);
+    let P0_P = ratioValue;
+    let Mach = mach_from_press(P0_P);
+    let T0_T = temp_from_mach(Mach, gamma);
+    let Rho0_Rho = rho_from_temp(T0_T);
+    let A_As = area_from_mach(Mach);
 
     let Mach_sub = null;
     let T0T_sub = null;
