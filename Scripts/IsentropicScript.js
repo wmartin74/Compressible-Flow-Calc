@@ -67,8 +67,8 @@ function mach_solver(a_as) {
   const mach_sub = math.nsolve(x => 1/x * ((5+x**2)/6)**3-a_as,0.1);
   console.log("Subsonic output: ", mach_sub);
   const mach_super = math.nsolve(x => 1/x * ((5+x**2)/6)**3-a_as,2);
-  console.log("Supersonic output: ", mach_sup);
-  return [mach_sub,mach_sup];
+  console.log("Supersonic output: ", mach_super);
+  return [mach_sub,mach_super];
 }
 
 //------ Isentropic Runscript ------
@@ -122,88 +122,74 @@ function runscript(event) {
     P0P_super = null;
     Rho0Rho_super = null;
 
-    console.log("Mach: ", Mach);
-    console.log("T0_T: ", T0_T);
-    console.log("P0_P: ", P0_P);
-    console.log("Rho0_Rho: ", Rho0_Rho);
-    console.log("A_As: ", A_As);
-    console.log("Mach_sub: ", Mach_sub);
-    console.log("T0T_sub: ", T0T_sub);
-    console.log("P0P_sub: ", P0P_sub);
-    console.log("Rho0Rho_sub: ", Rho0Rho_sub);
-    console.log("Mach_super: ", Mach_super);
-    console.log("T0T_super: ", T0T_super);
-    console.log("P0P_super: ", P0P_super);
-    console.log("Rho0Rho_super: ", Rho0Rho_super);
-
   } else if (ratioSelection === "pressure") {
 
-    let P0_P = ratioValue;
-    let Mach = mach_from_press(P0_P);
-    let T0_T = temp_from_mach(Mach, gamma);
-    let Rho0_Rho = rho_from_temp(T0_T);
-    let A_As = area_from_mach(Mach);
+    P0_P = ratioValue;
+    Mach = mach_from_press(P0_P);
+    T0_T = temp_from_mach(Mach, gamma);
+    Rho0_Rho = rho_from_temp(T0_T);
+    A_As = area_from_mach(Mach);
 
-    let Mach_sub = null;
-    let T0T_sub = null;
-    let P0P_sub = null;
-    let Rho0Rho_sub = null;
-    let Mach_super = null;
-    let T0T_super = null;
-    let P0P_super = null;
-    let Rho0Rho_super = null;
+    Mach_sub = null;
+    T0T_sub = null;
+    P0P_sub = null;
+    Rho0Rho_sub = null;
+    Mach_super = null;
+    T0T_super = null;
+    P0P_super = null;
+    Rho0Rho_super = null;
     
   } else if (ratioSelection === "temperature") {
     
-    const T0_T = ratioValue;
-    const P0_P = press_from_temp(T0_T);
-    const Mach = mach_from_press(P0_P);
-    const Rho0_Rho = rho_from_temp(T0_T);
-    const A_As = area_from_mach(Mach);
+    T0_T = ratioValue;
+    P0_P = press_from_temp(T0_T);
+    Mach = mach_from_press(P0_P);
+    Rho0_Rho = rho_from_temp(T0_T);
+    A_As = area_from_mach(Mach);
 
-    let Mach_sub = null;
-    let T0T_sub = null;
-    let P0P_sub = null;
-    let Rho0Rho_sub = null;
-    let Mach_super = null;
-    let T0T_super = null;
-    let P0P_super = null;
-    let Rho0Rho_super = null;
+    Mach_sub = null;
+    T0T_sub = null;
+    P0P_sub = null;
+    Rho0Rho_sub = null;
+    Mach_super = null;
+    T0T_super = null;
+    P0P_super = null;
+    Rho0Rho_super = null;
     
   } else if (ratioSelection === "density") {
 
-    const Rho0_Rho = ratioValue;
-    const Mach = mach_from_rho(Rho0_Rho);
-    const T0_T = temp_from_mach(Mach, gamma);
-    const P0_P = press_from_temp(T0_T);
-    const A_As = area_from_mach(Mach);
+    Rho0_Rho = ratioValue;
+    Mach = mach_from_rho(Rho0_Rho);
+    T0_T = temp_from_mach(Mach, gamma);
+    P0_P = press_from_temp(T0_T);
+    A_As = area_from_mach(Mach);
 
-    let Mach_sub = null;
-    let T0T_sub = null;
-    let P0P_sub = null;
-    let Rho0Rho_sub = null;
-    let Mach_super = null;
-    let T0T_super = null;
-    let P0P_super = null;
-    let Rho0Rho_super = null;
+    Mach_sub = null;
+    T0T_sub = null;
+    P0P_sub = null;
+    Rho0Rho_sub = null;
+    Mach_super = null;
+    T0T_super = null;
+    P0P_super = null;
+    Rho0Rho_super = null;
 
   } else if (ratioSelection === "area") {
 
-    const A_As = ratioSelection;
-    const [Mach_sub, Mach_super] = mach_solver(A_As);
+    A_As = ratioSelection;
+    [Mach_sub, Mach_super] = mach_solver(A_As);
 
-    const T0T_sub = temp_from_mach(Mach_sub, gamma);
-    const P0P_sub = press_from_temp(T0T_sub);
-    const Rho0Rho_sub = rho_from_temp(T0T_sub);
+    T0T_sub = temp_from_mach(Mach_sub, gamma);
+    P0P_sub = press_from_temp(T0T_sub);
+    Rho0Rho_sub = rho_from_temp(T0T_sub);
 
-    const T0T_super = temp_from_mach(Mach_super, gamma);
-    const P0P_super = press_from_temp(T0T_super);
-    const Rho0Rho_super = rho_from_temp(T0T_super);
+    T0T_super = temp_from_mach(Mach_super, gamma);
+    P0P_super = press_from_temp(T0T_super);
+    Rho0Rho_super = rho_from_temp(T0T_super);
 
-    let Mach = null;
-    let T0_T = null;
-    let P0_P = null;
-    let Rho0_Rho = null;
+    Mach = null;
+    T0_T = null;
+    P0_P = null;
+    Rho0_Rho = null;
   }
 
   
