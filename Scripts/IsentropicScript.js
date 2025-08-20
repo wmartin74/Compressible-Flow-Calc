@@ -208,21 +208,22 @@ function runscript(event) {
 
   
   
-  const results = {
-    Mach: Mach,
-    T0_T: T0_T,
-    P0_P: P0_P,
-    Rho0_Rho: Rho0_Rho,
-    A_As: A_As,
-    Mach_sub: Mach_sub,
-    T0T_sub: T0T_sub,
-    P0P_sub: P0P_sub,
-    Rho0Rho_sub: Rho0Rho_sub,
-    Mach_super: Mach_super,
-    T0T_super: T0T_super,
-    P0P_super: P0P_super,
-    Rho0Rho_super: Rho0Rho_super
+  let results = {
+    Mach: Mach.toString(),
+    T0_T: T0_T.toString(),
+    P0_P: P0_P.toString(),
+    Rho0_Rho: Rho0_Rho.toString(),
+    A_As: A_As.toString(),
+    Mach_sub: Mach_sub.toString(),
+    T0T_sub: T0T_sub.toString(),
+    P0P_sub: P0P_sub.toString(),
+    Rho0Rho_sub: Rho0Rho_sub.toString(),
+    Mach_super: Mach_super.toString(),
+    T0T_super: T0T_super.toString(),
+    P0P_super: P0P_super.toString(),
+    Rho0Rho_super: Rho0Rho_super.toString()
   };
+
   console.log(results);
   localStorage.setItem("IsentropicAnalysis", JSON.stringify(results));
   console.log("Results Saved");
