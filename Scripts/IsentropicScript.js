@@ -209,7 +209,7 @@ function runscript(event) {
   
   
   let results = {
-    "Mach": Mach.toString(),
+    "Mach": Mach,
     "T0_T": T0_T.toString(),
     "P0_P": P0_P.toString(),
     "Rho0_Rho": Rho0_Rho.toString(),
