@@ -64,7 +64,7 @@ function mach_from_rho(rho0_rho) {
 
 function mach_solver(a_as) {
 
-  let result = numeric.uncmin(function(x) {return 1/x[0] * ((5+x[0]**2)/6)**3-a_as;}, 0.1);
+  let result = numeric.uncmin(function(x) {return 1/x[0] * ((5+x[0]**2)/6)**3-a_as;}, 0.2);
   const mach_sub = result.solution[0];
   console.log("Subsonic output: ", mach_sub);
   result = numeric.uncmin(function(x) {return 1/x[0] * ((5+x[0]**2)/6)**3-a_as;}, 2);
