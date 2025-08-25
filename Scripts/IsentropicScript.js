@@ -39,13 +39,8 @@ function mach_from_rho(rho0_rho) {
 }
 
 function mach_solver(a_as) {
-  function EqInit(x, AreaRatio) {
-    return 1/x[0] * Math.pow((5+Math.pow(x[0],2))/6, 3 - AreaRatio);
-  }
-
   function MachFunc(x) {
-    let AreaRatio = a_as;
-    return EqInit(x, AreaRatio);
+    return 1/x * Math.pow((5+Math.pow(x,2))/6, 3 - a_as);
   }
 
   let initguess = 2;
