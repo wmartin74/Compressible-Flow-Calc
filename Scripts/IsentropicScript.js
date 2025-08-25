@@ -49,9 +49,8 @@ function mach_solver(a_as) {
   }
 
   let initguess = 2;
-  console.log(a_as);
-  console.log(1/2 * ((5+2**2)/6)**3-a_as);
-  let result = numeric.uncmin(MachFunc, initguess);
+  console.log(MathFunc(2));
+  let result = numeric.uncmin(x => MachFunc(x), initguess);
   console.log(result);
   const mach_sub = result.solution[0];
   console.log("Subsonic output: ", mach_sub);
