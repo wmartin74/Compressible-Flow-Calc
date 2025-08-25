@@ -41,7 +41,7 @@ function mach_from_rho(rho0_rho) {
 function mach_solver(a_as) {
 
   console.log(a_as);
-  let result = numeric.uncmin(function(x) {return 1/x[0] * ((5+x[0]**2)/6)**3-a_as;}, 2);
+  let result = numeric.uncmin(function(x) {return 1/x[0] * ((5+x[0]**2)/6)**3-a_as;}, 0.2);
   console.log(result);
   const mach_sub = result.solution[0];
   console.log("Subsonic output: ", mach_sub);
@@ -155,7 +155,7 @@ function runscript(event) {
 
   } else if (ratioSelection === "area") {
 
-    A_As = ratioSelection;
+    A_As = ratioValue;
     [Mach_sub, Mach_super] = mach_solver(A_As);
 
     T0T_sub = temp_from_mach(Mach_sub, gamma);
