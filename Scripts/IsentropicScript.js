@@ -49,7 +49,7 @@ function mach_solver(a_as) {
   }
 
   let initguess = 2;
-  console.log(MathFunc(2));
+  console.log(MachFunc(2));
   let result = numeric.uncmin(x => MachFunc(x), initguess);
   console.log(result);
   const mach_sub = result.solution[0];
