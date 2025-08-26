@@ -47,10 +47,10 @@ function mach_solver(a_as) {
   console.log(MachFunc(2));
   let result = numeric.uncmin(x => MachFunc(x), initguess);
   console.log(result);
-  const mach_sub = result.solution[0];
+  const mach_sub = result.solution;
   console.log("Subsonic output: ", mach_sub);
   result = numeric.uncmin(MachFunc, initguess);
-  const mach_super = result.solution[0];
+  const mach_super = result.solution;
   console.log("Supersonic output: ", mach_super);
   return [mach_sub,mach_super];
 }
