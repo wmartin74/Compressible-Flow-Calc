@@ -43,12 +43,13 @@ function mach_solver(a_as) {
     return 1/x * Math.pow((5+Math.pow(x,2))/6, 3 - a_as);
   }
 
-  let initguess = 2;
+  let initguess = 0.1;
   console.log(MachFunc(2));
   let result = numeric.uncmin(x => MachFunc(x), initguess);
   console.log(result);
   const mach_sub = result.solution;
   console.log("Subsonic output: ", mach_sub);
+  initguess = 3;
   result = numeric.uncmin(MachFunc, initguess);
   const mach_super = result.solution;
   console.log("Supersonic output: ", mach_super);
