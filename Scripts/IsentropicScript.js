@@ -39,20 +39,44 @@ function mach_from_rho(rho0_rho) {
 }
 
 function mach_solver(a_as) {
-  function MachFunc(x) {
-    return 1/x * Math.pow((5+Math.pow(x,2))/6, 3 - a_as);
+  //function MachFunc(x) {
+  //  return 1/x * Math.pow((5+Math.pow(x,2))/6, 3 - a_as);
+  //}
+
+  //let initguess = 0.1;
+  //console.log(MachFunc(2));
+  //let result = numeric.uncmin(x => MachFunc(x), initguess);
+  //console.log(result);
+  //const mach_sub = result.solution;
+  //console.log("Subsonic output: ", mach_sub);
+  //initguess = 3;
+  //result = numeric.uncmin(MachFunc, initguess);
+  //const mach_super = result.solution;
+  //console.log("Supersonic output: ", mach_super);
+
+  function solveRoot(a_as, x0 = 0.5) {
+    function f(x) {
+        if (x[0] === 0) return Infinity;
+        return (1 / x[0]) * Math.pow((5 + x[0] ** 2) / 6, 3 - a_as);
+    }
+
+    // Minimize the square of the function
+    function objective(x) {
+        const fx = f(x);
+        return fx * fx;
+    }
+
+    const result = numeric.uncmin(objective, [x0]);
+
+    if (result.success && Math.abs(f(result.solution)) < 1e-6) {
+        return result.solution[0];
+    } else {
+        console.warn("No root found or convergence failed.");
+        return null;
+    }
   }
 
-  let initguess = 0.1;
-  console.log(MachFunc(2));
-  let result = numeric.uncmin(x => MachFunc(x), initguess);
-  console.log(result);
-  const mach_sub = result.solution;
-  console.log("Subsonic output: ", mach_sub);
-  initguess = 3;
-  result = numeric.uncmin(MachFunc, initguess);
-  const mach_super = result.solution;
-  console.log("Supersonic output: ", mach_super);
+  const mach_sub = solveRoot(a_as, 0.5);
   return [mach_sub,mach_super];
 }
 
