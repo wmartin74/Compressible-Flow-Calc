@@ -68,7 +68,7 @@ function mach_solver(a_as) {
 
     const result = numeric.uncmin(objective, [x0]);
     console.log(result);
-    if (result.success && Math.abs(f(result.solution)) < 1e-6) {
+    if (result.success && Math.abs(f(result.solution[0])) < 1e-9) {
         return result.solution[0];
     } else {
         console.warn("No root found or convergence failed.");
@@ -76,7 +76,8 @@ function mach_solver(a_as) {
     }
   }
 
-  const mach_sub = solveRoot(a_as, 0.5);
+  const mach_sub = solveRoot(a_as, 0.2);
+  const mach_super = solveRoot(a_as, 2);
   return [mach_sub,mach_super];
 }
 
