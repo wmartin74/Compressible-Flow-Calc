@@ -38,7 +38,6 @@ function mach_from_rho(rho0_rho) {
     return mach;
 }
 
-function mach_solver(a_as) {
   //function MachFunc(x) {
   //  return 1/x * Math.pow((5+Math.pow(x,2))/6, 3 - a_as);
   //}
@@ -54,16 +53,25 @@ function mach_solver(a_as) {
   //const mach_super = result.solution;
   //console.log("Supersonic output: ", mach_super);
 
+function mach_solver(a_as) {
+
+
   function solveRoot(a_as, x0 = 0.5) {
+    const exponent = (gamma + 1) / (2 * (gamma - 1));
+
     function f(x) {
         if (x[0] === 0) return Infinity;
-        return (1 / x[0]) * Math.pow((5 + x[0] ** 2) / 6, 3 - a_as);
+        return (1 / x[0]) * Math.pow((5 + x[0] ** 2) / 6, exponent);
+    }
+
+    function residual(x) {
+      return f(x) - a_as;
     }
 
     // Minimize the square of the function
     function objective(x) {
-        const fx = f(x);
-        return fx * fx;
+        const r = residual(x);
+        return r * r;
     }
 
     const result = numeric.uncmin(objective, [x0]);
