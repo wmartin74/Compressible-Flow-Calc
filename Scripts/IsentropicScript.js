@@ -58,7 +58,7 @@ function mach_solver(a_as) {
     return f(Mach) - targetratio;
   }
 
-  function NewtonSolver(targetRatio, x0 = 0.5, tol = 1e-6, maxIter = 100) {
+  function NewtonSolver(targetRatio, x0, tol = 1e-6, maxIter = 100) {
     let Mach = x0;
 
     for (let i = 0; i< maxIter; i++) {
@@ -77,8 +77,8 @@ function mach_solver(a_as) {
     return null;
   }
 
-  const mach_sub = solveRoot(a_as, 0.2);
-  const mach_super = solveRoot(a_as, 3);
+  const mach_sub = NewtonSolver(a_as, 0.2);
+  const mach_super = NewtonSolver(a_as, 3);
   return [mach_sub,mach_super];
 }
 
