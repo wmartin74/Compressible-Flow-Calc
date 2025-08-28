@@ -77,7 +77,6 @@ function mach_solver(a_as) {
     const result = numeric.uncmin(objective, [x0]);
     console.log(result);
     console.log(result.solution[0], f(result.solution));
-    console.log(result.solution);
     if (result.success && Math.abs(residual(result.solution[0])) < 1e-6) {
         return result.solution[0];
     } else {
@@ -87,7 +86,7 @@ function mach_solver(a_as) {
   }
 
   const mach_sub = solveRoot(a_as, 0.2);
-  const mach_super = solveRoot(a_as, 2);
+  const mach_super = solveRoot(a_as, 3);
   return [mach_sub,mach_super];
 }
 
