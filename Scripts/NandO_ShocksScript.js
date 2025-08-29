@@ -42,6 +42,11 @@ function NormalShock(mach1,temp1,press1){
   return [mach2,temp2,press2,rho2,t01,p01,p02,rho1];
 }
 
+//------ Oblique Shock Functions ------
+function ObliqueShock(mach1,theta,temp1,press1) {
+  
+}
+
 function runscript(event) {
   event.preventDefault();
   window.location.href = "NandO_ShocksResult.html";
