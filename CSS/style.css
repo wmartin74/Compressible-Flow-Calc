@@ -25,6 +25,14 @@ h1 {
     text-align:center;
 }
 
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+}
+
 #MachResults {
     background-color: #D3D3D3;
     color: #536878;
