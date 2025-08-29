@@ -9,7 +9,7 @@ function temp_from_mach(mach,gamma) {
 }
 
 function area_from_mach(mach) {
-  a_as = (1/mach)*((5+mach**2)/6)**3;
+  a_as = (1/mach)*Math.pow((5+mach**2)/6, 3);
   return a_as;
 }
 
@@ -24,17 +24,17 @@ function rho_from_temp(t0_t) {
 }
 
 function mach_from_temp(t0_t) {
-    mach = (5*t0_t-5)**0.5;
+    mach = Math.pow(5*t0_t-5, 0.5);
     return mach;
 }
 
 function mach_from_press(p0_p) {
-    mach = (5*(p0_p**(2/7))-5)**.5;
+    mach = Math.pow(5*(p0_p**(2/7))-5, 0.5);
     return mach;
 }
 
 function mach_from_rho(rho0_rho) {
-    mach = (5*(rho0_rho**(2/5))-5)**.5;
+    mach = Math.pow(5*(rho0_rho**(2/5))-5, 0.5);
     return mach;
 }
 
