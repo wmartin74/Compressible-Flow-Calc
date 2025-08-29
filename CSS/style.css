@@ -25,7 +25,47 @@ h1 {
     text-align:center;
 }
 
-#Results {
+#MachResults {
+    background-color: #D3D3D3;
+    color: #536878;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin: auto;
+    text-align:center;
+}
+
+#TempResults {
+    background-color: #D3D3D3;
+    color: #536878;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin: auto;
+    text-align:center;
+}
+
+#PressResults {
+    background-color: #D3D3D3;
+    color: #536878;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin: auto;
+    text-align:center;
+}
+
+#DensityResults {
+    background-color: #D3D3D3;
+    color: #536878;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin: auto;
+    text-align:center;
+}
+
+#AreaResults {
     background-color: #D3D3D3;
     color: #536878;
     padding: 10px;
