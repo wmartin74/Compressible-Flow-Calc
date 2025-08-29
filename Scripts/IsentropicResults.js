@@ -3,19 +3,17 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Results Loaded");
   console.log(results);
 
-  mach.innerHTML = results.Mach;
-  t0_t.innerHTML = results.T0_T;
-  p0_p.innerHTML = results.P0_P;
-  rho0_rho.innerHTML = results.Rho0_Rho;
-  a_as.innerHTML = results.A_As;
-  mach_sub.innerHTML = results.Mach_sub;
-  t0t_sub.innerHTML = results.T0T_sub;
-  p0p_sub.innerHTML = results.P0P_sub;
-  rho0rho_sub.innerHTML = results.Rho0Rho_sub;
-  mach_super.innerHTML = results.Mach_super;
-  t0t_super.innerHTML = results.T0T_super;
-  p0p_super.innerHTML = results.P0P_super;
-  rho0rho_super.innerHTML = results.Rho0Rho_super;
-  
-  
+  let element = ['Mach', 'T0_T', 'P0_P', 'Rho0_Rho', 'A_As', 'Mach_sub', 'T0T_sub', 'P0P_sub', 'Rho0Rho_sub', 'Mach_super', 'T0T_super', 'P0P_super', 'Rho0Rho_super'];
+
+  for (let i = 0; i < element.length; i++) {
+    let key = document.getElementById(element[i]);
+    if (results[element[i]] != null && typeof results[element[i]] == 'number') {
+      key.innerHTML = results[element[i]].toFixed(4);
+    } else if (results[element[i]] != null && typeof results[element[i]] != 'number') {
+      key.innerHTML = results[element[i]];
+    } else {
+      key.innerHTML = "N/A";
+    }
+  }
+
 });

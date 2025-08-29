@@ -38,55 +38,47 @@ function mach_from_rho(rho0_rho) {
     return mach;
 }
 
-  //function MachFunc(x) {
-  //  return 1/x * Math.pow((5+Math.pow(x,2))/6, 3 - a_as);
-  //}
-
-  //let initguess = 0.1;
-  //console.log(MachFunc(2));
-  //let result = numeric.uncmin(x => MachFunc(x), initguess);
-  //console.log(result);
-  //const mach_sub = result.solution;
-  //console.log("Subsonic output: ", mach_sub);
-  //initguess = 3;
-  //result = numeric.uncmin(MachFunc, initguess);
-  //const mach_super = result.solution;
-  //console.log("Supersonic output: ", mach_super);
 
 function mach_solver(a_as) {
 
-
-  function solveRoot(a_as, x0 = 0.5) {
+  function f(Mach) {
     const exponent = (gamma + 1) / (2 * (gamma - 1));
+    return (1 / Mach) * Math.pow((5 + Mach**2) / 6, exponent);
+  }
+  function fprime(Mach) {
+    const exponent = (gamma + 1) / (2 * (gamma - 1));
+    const base = (5 + Mach**2) / 6;
 
-    function f(x) {
-        if (x[0] === 0) return Infinity;
-        return (1 / x[0]) * Math.pow((5 + x[0] ** 2) / 6, exponent);
-    }
+    const dbase_dmach = (2 * Mach) / 6;
+    const dterm_dmach = -1 / (Mach**2) * Math.pow(base, exponent) + (1 / Mach) * exponent * Math.pow(base, exponent - 1) * dbase_dmach;
 
-    function residual(x) {
-      return f(x) - a_as;
-    }
-
-    // Minimize the square of the function
-    function objective(x) {
-        const r = residual(x);
-        return r * r;
-    }
-
-    const result = numeric.uncmin(objective, [x0]);
-    console.log(result);
-    console.log(result.solution[0], f(result.solution));
-    if (result.success && Math.abs(residual(result.solution[0])) < 1e-6) {
-        return result.solution[0];
-    } else {
-        console.warn("No root found or convergence failed.");
-        return null;
-    }
+    return dterm_dmach;
+  }
+  function residual(Mach, targetratio) {
+    return f(Mach) - targetratio;
   }
 
-  const mach_sub = solveRoot(a_as, 0.2);
-  const mach_super = solveRoot(a_as, 3);
+  function NewtonSolver(targetRatio, x0, tol = 1e-6, maxIter = 100) {
+    let Mach = x0;
+
+    for (let i = 0; i< maxIter; i++) {
+      const r = residual(Mach, targetRatio);
+      const rprime = fprime(Mach);
+
+      if (Math.abs(rprime) < 1e-8) {
+        console.warn("Derivative too small possible flat slope.");
+        break;
+      }
+      const delta = r / rprime;
+      Mach -= delta;
+      if (Math.abs(delta) <tol && Mach > 0) return Mach;
+    }
+    console.warn("Newtons method did not converge.");
+    return null;
+  }
+
+  const mach_sub = NewtonSolver(a_as, 0.2);
+  const mach_super = NewtonSolver(a_as, 3);
   return [mach_sub,mach_super];
 }
 
