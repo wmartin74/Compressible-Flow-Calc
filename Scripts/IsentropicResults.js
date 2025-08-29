@@ -7,10 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   for (let i = 0; i < element.length; i++) {
     let key = document.getElementById(element[i]);
-    if (results[element[i]] != null) {
+    if (results[element[i]] != null && typeof results[element[i]] != 'number') {
       key.innerHTML = results[element[i]].toFixed(4);
+    } else if (results[element[i]] != null && typeof results[element[i]] == 'number') {
+      key.innerHTML = results[element[i]];
     } else {
-      element[i].innerHTML = "N/A";
+      key.innerHTML = "N/A";
     }
   }
 
