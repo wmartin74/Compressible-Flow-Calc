@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   for (let i = 0; i < element.length; i++) {
     let key = document.getElementById(element[i]);
-    if (results[element[i]] !== null) {
+    if (results[element[i]] != null) {
       key.innerHTML = results[element[i]].toFixed(4);
     } else {
       element[i].innerHTML = "N/A";
     }
   }
-  
+
 });
