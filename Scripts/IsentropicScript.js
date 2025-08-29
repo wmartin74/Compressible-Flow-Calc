@@ -38,13 +38,14 @@ function mach_from_rho(rho0_rho) {
     return mach;
 }
 
-
+// Newtons method solver to find super and subsonic solutions to the mach speed of a fluid given the Area ratio.
 function mach_solver(a_as) {
-
+  // Define the function realting mach to area ratio
   function f(Mach) {
     const exponent = (gamma + 1) / (2 * (gamma - 1));
     return (1 / Mach) * Math.pow((5 + Mach**2) / 6, exponent);
   }
+  // Calculating the value if the derivative of f given the mach number
   function fprime(Mach) {
     const exponent = (gamma + 1) / (2 * (gamma - 1));
     const base = (5 + Mach**2) / 6;
@@ -54,13 +55,14 @@ function mach_solver(a_as) {
 
     return dterm_dmach;
   }
+  // Calculating the residual of the function or the difference between the current area ratio itteration and the target area ratio.
   function residual(Mach, targetratio) {
     return f(Mach) - targetratio;
   }
-
+  // Solver runscript
   function NewtonSolver(targetRatio, x0, tol = 1e-6, maxIter = 100) {
     let Mach = x0;
-
+    //itterates up to 100 times until the ratio between the residual and derivative is less than the tolerance.
     for (let i = 0; i< maxIter; i++) {
       const r = residual(Mach, targetRatio);
       const rprime = fprime(Mach);
@@ -71,18 +73,20 @@ function mach_solver(a_as) {
       }
       const delta = r / rprime;
       Mach -= delta;
+      // returns mach solution or otherwise passes warning in console.
       if (Math.abs(delta) <tol && Mach > 0) return Mach;
     }
     console.warn("Newtons method did not converge.");
     return null;
   }
-
+  // runs newtons solver.
   const mach_sub = NewtonSolver(a_as, 0.2);
   const mach_super = NewtonSolver(a_as, 3);
   return [mach_sub,mach_super];
 }
 
 //------ Isentropic Runscript ------
+// querys user inputs from Isentropic HTML.
 function pulldata() {
     try {
         const ratioSelection = document.querySelector('input[name="ratio"]:checked').value;
@@ -204,7 +208,7 @@ function runscript(event) {
   }
 
   
-  
+  // Stores solutions into object.
   let results = {
     "Mach": Mach,
     "T0_T": T0_T,
@@ -220,7 +224,7 @@ function runscript(event) {
     "P0P_super": P0P_super,
     "Rho0Rho_super": Rho0Rho_super
   };
-
+  //Saves results object into local storage and directs to results page.
   console.log(results);
   localStorage.setItem("IsentropicAnalysis", JSON.stringify(results));
   console.log("Results Saved");
