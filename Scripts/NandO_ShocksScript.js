@@ -18,6 +18,43 @@ function Press_jump(mach,p1) {
   return p2;
 }
 
+function beta_solver(mach,theta,gamma) {
+  mu = Math.asin(1/mach);
+  function f(beta) {
+    return 2*(1/Math.tan(beta))*((mach**2 * Math.sin(beta)**2 - 1)/(mach**2 * (gamma + Math.cos(2*beta)) + 2)) - Math.tan(theta);
+  }
+
+  function fprime(beta) {
+    const numerator = 2*(2*mach**2 * beta * Math.cos(beta**2) *Math.tan(beta)* (mach**2*(gamma + Math.cos(2*beta)) + 2) - (Math.sec(beta)**2 * (mach**2 * (gamma + Math.cos(2*beta))+2) - 2*mach**2 * Math.sin(2*beta)*Math.tan(beta))*(mach**2 * Math.sin(beta**2) - 1));
+    const denominator = Math.tan(beta)**2 * Math.Pow(mach**2 * (gamma + Math.cos(2*beta)) +2,2);
+    return numerator/denominator - Math.sec(beta)**2;
+  }
+
+  function residual(beta,target) {
+    return f(beta) - target;
+  }
+
+  function NewtonSolver(target, x0, tol = 1e-6, maxIter = 100) {
+    let beta = x0;
+
+    for (let i = 0; i < maxIter; i++) {
+      const r = residual(beta, target);
+      const rprime = fprime(beta);
+
+      if (Math.abs(rprime) < 1e-8) {
+        console.error("Derivative too small; no convergence.");
+        break;
+      }
+      const delta = r / rprime;
+      beta -= delta;
+
+      if (Math.abs(delta) < tol && delta > 0) return beta;
+    }
+    console.error("Max iterations reached; no convergence.");
+    return null;
+  }
+}
+
 //------ Normal Shock Functions ------
 function NormalShock(mach1,temp1,press1){
   const t0_t1 = temp_from_mach(mach1,gamma);
@@ -44,7 +81,7 @@ function NormalShock(mach1,temp1,press1){
 
 //------ Oblique Shock Functions ------
 function ObliqueShock(mach1,theta,temp1,press1) {
-  
+
 }
 
 function runscript(event) {
