@@ -53,6 +53,7 @@ function beta_solver(mach,theta,gamma) {
     console.error("Max iterations reached; no convergence.");
     return null;
   }
+  return beta = NewtonSolver(theta, mu);
 }
 
 //------ Normal Shock Functions ------
@@ -81,7 +82,9 @@ function NormalShock(mach1,temp1,press1){
 
 //------ Oblique Shock Functions ------
 function ObliqueShock(mach1,theta,temp1,press1) {
+  const beta = beta_solver(mach1,theta,gamma);
 
+  
 }
 
 function runscript(event) {
