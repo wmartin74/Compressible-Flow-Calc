@@ -18,6 +18,11 @@ function Press_jump(mach,p1) {
   return p2;
 }
 
+// def obl_mach(gamma:float, Mn1:float, beta:float, theta:float):
+    // Mn2 = ((1+((gamma-1)/2)*(Mn1**2))/((gamma*(Mn1**2))-((gamma-1)/2)))**.5
+    // M2 = Mn2/(np.sin(np.deg2rad(beta-theta)))
+    // return M2
+
 function beta_solver(mach,theta,gamma) {
   mu = Math.asin(1/mach);
   function f(beta) {
@@ -56,6 +61,12 @@ function beta_solver(mach,theta,gamma) {
   return beta = NewtonSolver(theta, mu);
 }
 
+function ObliqueMach(gamma,Mn1,beta,Theta) {
+  const Mn2 = Math.pow((1+((gamma-1)/2)*(Mn1**2))/((gamma*(Mn1**2))-((gamma-1)/2)))**0.5;
+  const M2 = Mn2/(Math.sin(beta - Theta*(Math.PI/180)));
+  return M2;
+}
+
 //------ Normal Shock Functions ------
 function NormalShock(mach1,temp1,press1){
   const t0_t1 = temp_from_mach(mach1,gamma);
@@ -84,8 +95,13 @@ function NormalShock(mach1,temp1,press1){
 function ObliqueShock(mach1,theta,temp1,press1) {
   const beta = beta_solver(mach1,theta,gamma);
 
+  const NormalMach1 = mach1 * Math.sin(beta);
+
+
   
 }
+
+
 
 function runscript(event) {
   event.preventDefault();
