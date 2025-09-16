@@ -197,7 +197,25 @@ function runscript(event) {
 
   }
 
+  let results = {
+    'Mach1': Mach1,
+    'Mach2': Mach2,
+    'Temp1': Temp1,
+    'Temp2': Temp2,
+    'T01': Temp01,
+    'Press1': Press1,
+    'Press2': Press2,
+    'P01': P01,
+    'P02': P02,
+    'Rho1': Rho1,
+    'Rho2': Rho2,
+    'Theta': Theta,
+    'Beta': beta
+  }
   
+  consol.log(results);
+  localStorage.setItem("ShockAnalysis", JSON.stringify(results));
+  console.log("Results saved");
 
   window.location.href = "NandO_ShocksResult.html";
 }
