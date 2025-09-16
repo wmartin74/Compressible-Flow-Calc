@@ -25,7 +25,7 @@ function beta_solver(mach,theta,gamma) {
   }
 
   function fprime(beta) {
-    const numerator = 2*(2*mach**2 * beta * Math.cos(beta**2) *Math.tan(beta)* (mach**2*(gamma + Math.cos(2*beta)) + 2) - (Math.sec(beta)**2 * (mach**2 * (gamma + Math.cos(2*beta))+2) - 2*mach**2 * Math.sin(2*beta)*Math.tan(beta))*(mach**2 * Math.sin(beta**2) - 1));
+    const numerator = 2*(2*mach**2 * beta * Math.cos(beta**2) *Math.tan(beta)* (mach**2*(gamma + Math.cos(2*beta)) + 2) - ((1/Math.cos(beta))**2 * (mach**2 * (gamma + Math.cos(2*beta))+2) - 2*mach**2 * Math.sin(2*beta)*Math.tan(beta))*(mach**2 * Math.sin(beta**2) - 1));
     const denominator = Math.tan(beta)**2 * Math.Pow(mach**2 * (gamma + Math.cos(2*beta)) +2,2);
     return numerator/denominator - Math.sec(beta)**2;
   }
@@ -115,7 +115,7 @@ function NormalShock(mach1,temp1,press1){
   const t0_t2 = temp_from_mach(mach2,gamma);
   const temp2 = t01/t0_t2;
 
-  const press2 = press_jump(mach1,press1);
+  const press2 = Press_jump(mach1,press1);
   const p0_p2 = press_from_temp(t0_t2);
   const p02 = p0_p2*press2;
 
