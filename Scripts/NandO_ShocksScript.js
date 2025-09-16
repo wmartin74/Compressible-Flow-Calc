@@ -26,8 +26,8 @@ function beta_solver(mach,theta,gamma) {
 
   function fprime(beta) {
     const numerator = 2*(2*mach**2 * beta * Math.cos(beta**2) *Math.tan(beta)* (mach**2*(gamma + Math.cos(2*beta)) + 2) - ((1/Math.cos(beta))**2 * (mach**2 * (gamma + Math.cos(2*beta))+2) - 2*mach**2 * Math.sin(2*beta)*Math.tan(beta))*(mach**2 * Math.sin(beta**2) - 1));
-    const denominator = Math.tan(beta)**2 * Math.Pow(mach**2 * (gamma + Math.cos(2*beta)) +2,2);
-    return numerator/denominator - Math.sec(beta)**2;
+    const denominator = Math.tan(beta)**2 * Math.pow(mach**2 * (gamma + Math.cos(2*beta)) +2,2);
+    return numerator/denominator - (1/Math.cos(beta))**2;
   }
 
   function residual(beta,target) {
@@ -162,7 +162,21 @@ function pulldata() {
 function runscript(event) {
   event.preventDefault();
 
-  let [ShockSelection, Mach1, Temp1, Press1, Theta] = pulldata();
+  let Mach1 = 0;
+  let Mach2 = 0;
+  let Temp1 = 0;
+  let Temp2 = 0;
+  let Temp01 = 0;
+  let Press1 = 0;
+  let Press2 = 0;
+  let P01 = 0;
+  let P02 = 0;
+  let Rho1 = 0;
+  let Rho2 = 0;
+  let Theta = 0;
+  let beta = 0;
+
+  [ShockSelection, Mach1, Temp1, Press1, Theta] = pulldata();
   console.log("selection: ", ShockSelection);
   console.log("Mach1: ", Mach1);
   console.log("Temp1: ", Temp1);
@@ -170,7 +184,7 @@ function runscript(event) {
   console.log("Theta: ", Theta); 
 
   if (ShockSelection === "normal") {
-    const [Mach2,Temp2,Press2,Rho2,Temp01,P01,P02,Rho1] = NormalShock(Mach1,Temp1,Press1);
+    [Mach2,Temp2,Press2,Rho2,Temp01,P01,P02,Rho1] = NormalShock(Mach1,Temp1,Press1);
     console.log("Mach2: ", Mach2);
     console.log("Temp2: ", Temp2);
     console.log("Press2: ", Press2);
@@ -184,7 +198,7 @@ function runscript(event) {
 
   } else if (ShockSelection === "oblique") {
 
-    const [beta,Mach2,Temp2,Press2,Rho1,Rho2,Temp01,P01,P02] = ObliqueShock(Mach1,Theta,Temp1,Press1);
+    [beta,Mach2,Temp2,Press2,Rho1,Rho2,Temp01,P01,P02] = ObliqueShock(Mach1,Theta,Temp1,Press1);
     console.log("beta: ", beta*(180/Math.PI));
     console.log("Mach2: ", Mach2);
     console.log("Temp2: ", Temp2);
@@ -213,7 +227,7 @@ function runscript(event) {
     'Beta': beta
   }
   
-  consol.log(results);
+  console.log(results);
   localStorage.setItem("ShockAnalysis", JSON.stringify(results));
   console.log("Results saved");
 
