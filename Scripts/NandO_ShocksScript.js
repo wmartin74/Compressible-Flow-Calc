@@ -161,6 +161,44 @@ function pulldata() {
 
 function runscript(event) {
   event.preventDefault();
+
+  let [ShockSelection, Mach1, Temp1, Press1, Theta] = pulldata();
+  console.log("selection: ", ShockSelection);
+  console.log("Mach1: ", Mach1);
+  console.log("Temp1: ", Temp1);
+  console.log("Press1: ", Press1);
+  console.log("Theta: ", Theta); 
+
+  if (ShockSelection === "normal") {
+    const [Mach2,Temp2,Press2,Rho2,Temp01,P01,P02,Rho1] = NormalShock(Mach1,Temp1,Press1);
+    console.log("Mach2: ", Mach2);
+    console.log("Temp2: ", Temp2);
+    console.log("Press2: ", Press2);
+    console.log("Rho2: ", Rho2);
+    console.log("t01: ", Temp01);
+    console.log("p01: ", P01);
+    console.log("p02: ", P02);
+    console.log("rho1: ", Rho1);
+
+    let beta = null;
+
+  } else if (ShockSelection === "oblique") {
+
+    const [beta,Mach2,Temp2,Press2,Rho1,Rho2,Temp01,P01,P02] = ObliqueShock(Mach1,Theta,Temp1,Press1);
+    console.log("beta: ", beta*(180/Math.PI));
+    console.log("Mach2: ", Mach2);
+    console.log("Temp2: ", Temp2);
+    console.log("Press2: ", Press2);
+    console.log("Rho1: ", Rho1);
+    console.log("Rho2: ", Rho2);
+    console.log("Temp01: ", Temp01);
+    console.log("P01: ", P01);
+    console.log("P02: ", P02);
+
+  }
+
+  
+
   window.location.href = "NandO_ShocksResult.html";
 }
 
