@@ -34,7 +34,7 @@ function beta_solver(mach,theta,gamma) {
     return f(beta) - target;
   }
 
-  function NewtonSolver(target, x0, tol = 1e-6, maxIter = 100) {
+  function NewtonSolver(target, x0, tol = 1e-5, maxIter = 10000) {
     let beta = x0;
 
     for (let i = 0; i < maxIter; i++) {
@@ -50,6 +50,7 @@ function beta_solver(mach,theta,gamma) {
 
       if (Math.abs(delta) < tol && delta > 0) return beta;
     }
+    console.warn('Iteration ',i,': f(x) = ',f(beta),' x = ',{beta});
     console.error("Max iterations reached; no convergence.");
     return null;
   }
