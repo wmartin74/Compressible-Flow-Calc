@@ -7,7 +7,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 h1 {
@@ -18,70 +18,38 @@ h1 {
 #form { 
     background-color: #D3D3D3;
     color: #536878;
-    padding: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
     margin: auto;
     text-align:center;
 }
 
-.form-container {
+.form-container-isentropic {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.5rem;
     width: 100%;
 }
 
-#MachResults {
-    background-color: #D3D3D3;
-    color: #536878;
-    padding: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    margin: auto;
-    text-align:center;
+.result-box-isentropic {
+  background-color: #D3D3D3;
+  color: #536878;
+  padding: 1rem 1.25rem;
+  box-shadow: 0rem 0.5rem 1rem rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+  text-align: center;
+  box-sizing: border-box;
+  max-width: 25rem;
+  flex: 1 1 50rem;
+}
+.result-box p {
+  margin: 0.4rem 0;
 }
 
-#TempResults {
-    background-color: #D3D3D3;
-    color: #536878;
-    padding: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    margin: auto;
-    text-align:center;
-}
 
-#PressResults {
-    background-color: #D3D3D3;
-    color: #536878;
-    padding: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    margin: auto;
-    text-align:center;
-}
-
-#DensityResults {
-    background-color: #D3D3D3;
-    color: #536878;
-    padding: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    margin: auto;
-    text-align:center;
-}
-
-#AreaResults {
-    background-color: #D3D3D3;
-    color: #536878;
-    padding: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    margin: auto;
-    text-align:center;
-}
 
 input[type=radio] {
     font-size: 1rem;
@@ -89,9 +57,9 @@ input[type=radio] {
 }
 
 input[type=submit] {
-    font-size: 2rem;
+    font-size: 1.5rem;
     background-color: #536878;
     color: whitesmoke;    
-    padding: 1rem;
-    border-radius: 5px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
 }
