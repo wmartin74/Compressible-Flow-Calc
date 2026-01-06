@@ -168,6 +168,7 @@ function runscript(event) {
   let Temp1 = 0;
   let Temp2 = 0;
   let Temp01 = 0;
+  let Temp02 = 0;
   let Press1 = 0;
   let Press2 = 0;
   let P01 = 0;
@@ -185,7 +186,9 @@ function runscript(event) {
   console.log("Theta: ", Theta); 
 
   if (ShockSelection === "normal") {
+    Theta = 0;
     [Mach2,Temp2,Press2,Rho2,Temp01,P01,P02,Rho1] = NormalShock(Mach1,Temp1,Press1);
+    Temp02 = Temp01;
     console.log("Mach2: ", Mach2);
     console.log("Temp2: ", Temp2);
     console.log("Press2: ", Press2);
@@ -193,7 +196,7 @@ function runscript(event) {
     console.log("t01: ", Temp01);
     console.log("p01: ", P01);
     console.log("p02: ", P02);
-    console.log("rho1: ", Rho1);
+    console.log("Rho1: ", Rho1);
 
     let beta = null;
 
@@ -218,6 +221,7 @@ function runscript(event) {
     'Temp1': Temp1,
     'Temp2': Temp2,
     'T01': Temp01,
+    'T02': Temp02,
     'Press1': Press1,
     'Press2': Press2,
     'P01': P01,
@@ -226,13 +230,17 @@ function runscript(event) {
     'Rho2': Rho2,
     'Theta': Theta,
     'Beta': beta
-  }
-  
+  };
+
   console.log(results);
   localStorage.setItem("ShockAnalysis", JSON.stringify(results));
   console.log("Results saved");
 
-  window.location.href = "NandO_ShocksResult.html";
-}
+  if (ShockSelection === "normal") {
+    window.location.href = "N_ShocksResult.html";
+  } else if (ShockSelection === "oblique") {
+    window.location.href = "O_ShocksResult.html";
+  }
+};
 
 document.getElementById("form").addEventListener("submit", runscript);
