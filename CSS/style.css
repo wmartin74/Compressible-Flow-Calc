@@ -25,7 +25,7 @@ h1 {
     text-align:center;
 }
 
-.form-container-isentropic {
+.form-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -34,7 +34,7 @@ h1 {
     width: 100%;
 }
 
-.result-box-isentropic {
+.result-box {
   background-color: #D3D3D3;
   color: #536878;
   padding: 1rem 1.25rem;

@@ -18,6 +18,7 @@ function Press_jump(mach,p1) {
   return p2;
 }
 
+/**
 function beta_solver(mach,theta,gamma) {
   mu = Math.asin(1/mach);
   function f(beta) {
@@ -51,15 +52,75 @@ function beta_solver(mach,theta,gamma) {
       if (Math.abs(delta) < tol && delta > 0) return beta;
     }
     console.warn('Iteration ',i,': f(x) = ',f(beta),' x = ',{beta});
-    console.error("Max iterations reached; no convergence.");
+    //console.error("Max iterations reached; no convergence.");
     return null;
   }
   return beta = NewtonSolver(theta, mu);
 }
+*/
+
+/**
+ * Solve for oblique shock beta (radians) given M, theta (radians), gamma.
+ * Returns { beta, converged, iterations, message }.
+ */
+function solveBeta(M, theta, gamma, opts = {}) {
+  const tol = opts.tol || 1e-10;
+  const maxIter = opts.maxIter || 60;
+  const useStrong = !!opts.strong; // if true, try strong solution initial guess
+
+  // theta-beta-M function: returns theta(beta) for given beta
+  function thetaFromBeta(beta) {
+    const sinb = Math.sin(beta);
+    const cosb = Math.cos(beta);
+    const sin2b = Math.sin(2 * beta);
+    const cos2b = Math.cos(2 * beta);
+    const M2 = M * M;
+    const numerator = 2 * (1 / Math.tan(beta)) * (M2 * sinb * sinb - 1);
+    const denominator = M2 * (gamma + cos2b) + 2;
+    return Math.atan(numerator / denominator);
+  }
+
+  // f(beta) = theta_given - theta(beta)
+  function f(beta) {
+    return theta - thetaFromBeta(beta);
+  }
+
+  // numeric derivative f'(beta)
+  function fprime(beta) {
+    const h = 1e-6;
+    return (f(beta + h) - f(beta - h)) / (2 * h);
+  }
+
+  // valid beta range: beta_min = asin(1/M) (weak limit), beta_max = pi/2
+  const betaMin = Math.asin(1 / M) + 1e-8;
+  const betaMax = Math.PI / 2 - 1e-8;
+
+  // initial guess: weak solution near betaMin, strong near mid-range
+  let beta = useStrong ? (betaMin + betaMax) * 0.75 : (betaMin + betaMax) * 0.25;
+
+  // clamp theta: if theta is larger than maximum possible for given M, return failure
+  // (optional: could compute theta_max by scanning beta)
+  for (let iter = 0; iter < maxIter; iter++) {
+    const val = f(beta);
+    if (Math.abs(val) < tol) {
+      return { beta, converged: true, iterations: iter, message: "Converged" };
+    }
+    const d = fprime(beta);
+    if (Math.abs(d) < 1e-12) break;
+    const betaNew = beta - val / d;
+    // keep beta in valid range
+    beta = Math.min(betaMax, Math.max(betaMin, betaNew));
+  }
+
+  return { beta, converged: false, iterations: maxIter, message: "Did not converge" };
+}
+
 
 function ObliqueMach(gamma,mn1,beta,Theta) {
-  let mn2 = Math.pow((1+((gamma-1)/2)*(mn1**2))/((gamma*(mn1**2))-((gamma-1)/2)))**0.5;
-  let m2 = mn2/(Math.sin(beta - Theta*(Math.PI/180)));
+  let mn2 = ((1+((gamma-1)/2)*(mn1**2))/((gamma*(mn1**2))-((gamma-1)/2)))**0.5;
+  console.log('mn2', mn2);
+  let m2 = mn2/(Math.sin(beta - Theta));
+  
   return m2;
 }
 
@@ -127,11 +188,19 @@ function NormalShock(mach1,temp1,press1){
 
 //------ Oblique Shock Functions ------
 function ObliqueShock(Mach1,theta,Temp1,Press1) {
-  const beta = beta_solver(Mach1,theta,gamma);
+  //const beta = beta_solver(Mach1,theta,gamma);
 
+  const thetarad = theta * Math.PI / 180;
+  const result = solveBeta(Mach1, thetarad, gamma);
+  if (result.converged) {
+    console.log("Beta (deg):", result.beta * 180 / Math.PI);
+  } else {
+    console.warn(result.message);
+  }
+  let beta = result.beta;
   const NormalMach1 = Mach1 * Math.sin(beta);
 
-  const Mach2 = ObliqueMach(gamma,NormalMach1,beta,theta);
+  const Mach2 = ObliqueMach(gamma,NormalMach1,beta,thetarad);
   
   const Rho2_1 = density_ratio(NormalMach1,gamma);
   const Press2_1 = pressure_ratio(NormalMach1,gamma);
@@ -140,7 +209,7 @@ function ObliqueShock(Mach1,theta,Temp1,Press1) {
   const [Temp2,Press2,Temp01,P01,P02] = Oblique_downstream(Temp1,Press1,Temp2_1,Press2_1,Mach1,gamma,Mach2);
   const Rho1 = (Press1*p_convert)/(R*Temp1);
   const Rho2 = (Press2*p_convert)/(R*Temp2);
-
+  beta = beta * (180/Math.PI);
   return [beta,Mach2,Temp2,Press2,Rho1,Rho2,Temp01,P01,P02];
 }
 
