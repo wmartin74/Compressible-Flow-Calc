@@ -1,65 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Oblique Shock — Upstream & Downstream Streamlines (No lines below shock)</title>
+<style>
+  :root{--bg:#f0f6fb;--flow:#1f6fb2;--shock:#d9534f;--muted:#374151;--panel:#fff}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+  body{background:var(--bg);display:flex;flex-direction:column;align-items:center;padding:18px;gap:12px;color:var(--muted)}
+  .panel{width:100%;max-width:1100px;background:var(--panel);padding:14px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,0.08)}
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  h1{font-size:1.05rem;margin:0}
+  .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  label{font-size:0.9rem;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+  input[type=range]{width:200px}
+  input[type=number]{width:84px;padding:6px;border-radius:6px;border:1px solid #d1d5db}
+  button{padding:.45rem .7rem;border-radius:6px;border:none;background:#2b6cb0;color:#fff;cursor:pointer}
+  svg{width:100%;height:560px;display:block;border-radius:6px;background:linear-gradient(180deg,#fff,#f7fbff)}
+  .muted{fill:var(--muted);font-size:12px;font-weight:600}
+  .legend{display:flex;gap:12px;margin-top:8px;align-items:center}
+  .sw{width:18px;height:10px;border-radius:2px;display:inline-block}
+  .sw.flow{background:var(--flow)}
+  .sw.shock{background:var(--shock)}
+  .note{font-size:12px;color:#6b7280;margin-top:8px}
+</style>
+</head>
+<body>
+  <div class="panel" role="region" aria-label="Oblique shock visualizer">
+    <header>
+      <h1>Oblique Shock — Upstream & Downstream Streamlines</h1>
+      <div class="controls" aria-hidden="false">
+        <label>
+          Deflection θ (deg)
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="thetaRange" type="range" min="0" max="30" value="10" step="0.1">
+            <input id="thetaNum" type="number" min="0" max="30" value="10" step="0.1">
+          </div>
+        </label>
 
-results = JSON.parse(localStorage.getItem("ShockAnalysis"));
-console.log("Results Loaded");
-console.log(results);
+        <label>
+          Upstream Mach M
+          <input id="M" type="number" step="0.1" min="1.01" value="2.5" />
+        </label>
 
-const thetaNum = results['Theta'];
-const Minput = results['Mach1'];
-const gammaInput = 1.4;
+        <label>
+          Gamma γ
+          <input id="gamma" type="number" step="0.01" min="1.01" value="1.4" />
+        </label>
+
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <label>
+            β (deg) computed
+            <input id="betaNum" type="number" readonly value="30" />
+          </label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <label style="display:flex;align-items:center;gap:6px"><input id="branchWeak" type="radio" name="branch" value="weak" checked> <span class="muted">Weak</span></label>
+            <label style="display:flex;align-items:center;gap:6px"><input id="branchStrong" type="radio" name="branch" value="strong"> <span class="muted">Strong</span></label>
+          </div>
+        </div>
+
+        <label>
+          Streamlines
+          <input id="streamCount" type="number" min="3" max="21" value="9" step="2">
+        </label>
+
+        <label style="display:flex;align-items:center;gap:8px">
+          <input id="showControl" type="checkbox" /> <span class="muted">Show control points</span>
+        </label>
+
+        <button id="drawBtn">Draw</button>
+      </div>
+    </header>
+
+    <div class="svg-wrap" style="margin-top:12px">
+      <svg id="svg" viewBox="0 0 1100 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Oblique shock diagram">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f6fb2"></path>
+          </marker>
+        </defs>
+
+        <g id="grid" opacity="0.08" stroke="#9fb3c6" stroke-width="0.5"></g>
+        <g id="streamlines" transform="translate(40,280)"></g>
+        <g id="shock" transform="translate(40,280)"></g>
+        <g id="labels" transform="translate(40,280)"></g>
+        <g id="debug" transform="translate(40,280)"></g>
+      </svg>
+
+      <div class="legend" aria-hidden="true">
+        <div><span class="sw flow"></span> <span class="muted">Streamlines</span></div>
+        <div><span class="sw shock"></span> <span class="muted">Shock line</span></div>
+      </div>
+      <div class="note">Streamlines are drawn upstream and downstream, but none are spawned below the lowest point of the shock.</div>
+    </div>
+  </div>
+
+<script>
+/* DOM refs */
+const thetaRange = document.getElementById('thetaRange');
+const thetaNum = document.getElementById('thetaNum');
+const Minput = document.getElementById('M');
+const gammaInput = document.getElementById('gamma');
+const betaNum = document.getElementById('betaNum');
+const branchWeak = document.getElementById('branchWeak');
+const branchStrong = document.getElementById('branchStrong');
 const streamCountInput = document.getElementById('streamCount');
 const showControl = document.getElementById('showControl');
 const drawBtn = document.getElementById('drawBtn');
-const branchWeak = document.getElementById('branchWeak');
-const branchStrong = document.getElementById('branchStrong');
+
 const svg = document.getElementById('svg');
 const gridG = svg.getElementById('grid');
 const streamG = svg.getElementById('streamlines');
 const shockG = svg.getElementById('shock');
 const labelsG = svg.getElementById('labels');
 const debugG = svg.getElementById('debug');
-const solStrong = results['StrongShock'];
-const solWeak = results['WeakShock']; 
-
-let element = [
-  'Mach1',
-  'Mach2',
-  'Temp1',
-  'Temp2',
-  'T01',
-  'T02',
-  'Press1',
-  'Press2',
-  'P01',
-  'P02',
-  'Rho1',
-  'Rho2',
-  'Theta',
-  'Beta'
-];
-
-
-
-for (let i = 0; i < element.length; i++) {
-  let key = document.getElementById(element[i]);
-  if (results[element[i]] != null && typeof results[element[i]] == 'number') {
-    console.log('key', key);
-    console.log(results[element[i]]);
-    key.innerHTML = results[element[i]].toFixed(4);
-  } else if (results[element[i]] != null && typeof results[element[i]] != 'number') {
-    key.innerHTML = results[element[i]];
-  } else {
-    key.innerHTML = "N/A";
-  }
-}
-
-
 
 function deg2rad(d){ return d * Math.PI / 180; }
 function rad2deg(r){ return r * 180 / Math.PI; }
-
 function bindRangeNumber(rangeEl, numEl){ rangeEl.addEventListener('input', ()=>{ numEl.value = rangeEl.value; drawDiagram(); }); numEl.addEventListener('input', ()=>{ rangeEl.value = numEl.value; drawDiagram(); }); }
-bindRangeNumber(streamSlide, streamCount);
+bindRangeNumber(thetaRange, thetaNum);
 
+/* theta-beta-M relation */
+function thetaFromBeta(beta, M, gamma){
+  const sinb = Math.sin(beta);
+  const cos2b = Math.cos(2*beta);
+  const M2 = M*M;
+  const numerator = 2 * (1/Math.tan(beta)) * (M2 * sinb * sinb - 1);
+  const denominator = M2 * (gamma + cos2b) + 2;
+  return Math.atan(numerator / denominator);
+}
+
+/* solver: Newton + bisection */
+function solveBeta(M, theta, gamma, branch='weak'){
+  const tol = 1e-10, maxIter = 60;
+  const betaMin = Math.asin(1 / M) + 1e-8;
+  const betaMax = Math.PI/2 - 1e-8;
+
+  let thetaMax = 0;
+  for(let b = betaMin; b < betaMax; b += 1e-3) thetaMax = Math.max(thetaMax, thetaFromBeta(b, M, gamma));
+  if(theta > thetaMax + 1e-12) return {converged:false, message:"θ exceeds maximum for given M", thetaMax};
+
+  let beta = (branch === 'strong') ? (betaMin + betaMax) * 0.75 : (betaMin + betaMax) * 0.25;
+  for(let iter=0; iter<maxIter; iter++){
+    const f = theta - thetaFromBeta(beta, M, gamma);
+    if(Math.abs(f) < tol) return {beta, converged:true, iterations:iter};
+    const h = 1e-6;
+    const fplus = theta - thetaFromBeta(beta + h, M, gamma);
+    const fminus = theta - thetaFromBeta(beta - h, M, gamma);
+    const df = (fplus - fminus) / (2*h);
+    if(Math.abs(df) < 1e-12) break;
+    const betaNew = beta - f/df;
+    if(!isFinite(betaNew)) break;
+    beta = Math.min(betaMax, Math.max(betaMin, betaNew));
+  }
+
+  // bisection fallback
+  let a = betaMin, b = betaMax;
+  let fa = theta - thetaFromBeta(a, M, gamma);
+  let fb = theta - thetaFromBeta(b, M, gamma);
+  if(fa * fb > 0) return {converged:false, message:"No sign change for bisection", thetaMax};
+  for(let iter=0; iter<100; iter++){
+    const m = 0.5*(a+b);
+    const fm = theta - thetaFromBeta(m, M, gamma);
+    if(Math.abs(fm) < 1e-10) return {beta:m, converged:true, iterations:iter+maxIter};
+    if(fa * fm < 0){ b = m; fb = fm; } else { a = m; fa = fm; }
+  }
+  return {beta:0.5*(a+b), converged:false, message:"Bisection reached max iterations"};
+}
 
 /* helpers */
 function clearGroups(){ [gridG, streamG, shockG, labelsG, debugG].forEach(g => { while(g.firstChild) g.removeChild(g.firstChild); }); }
@@ -83,49 +190,29 @@ function drawGrid(){
 function drawDiagram(){
   clearGroups();
   drawGrid();
-  if (branchStrong.checked) {
-    for (const key in solStrong) {
-      if (!Object.prototype.hasOwnProperty.call(results, key)) continue;
-      if (Object.prototype.hasOwnProperty.call(results, key)) {
-        results[key] = solStrong[key];
-        console.log('Changes results.',key,'=', solStrong[key]);
-      } else {
-        console.log('No Match for: ',key);
-      }
-    }
-  } else if (branchWeak.checked) {
-    for (const key in solWeak) {
-      if (!Object.prototype.hasOwnProperty.call(results, key)) continue;
-      if (Object.prototype.hasOwnProperty.call(results, key)) {
-        results[key] = solWeak[key];
-        console.log('Changes results.',key,'=', solWeak[key]);
-      } else {
-        console.log('No Match for: ', key);
-      }
-    }
-  }
-  for (let i = 0; i < element.length; i++) {
-    let key = document.getElementById(element[i]);
-    if (results[element[i]] != null && typeof results[element[i]] == 'number') {
-      console.log('key', key);
-      console.log(results[element[i]]);
-      key.innerHTML = results[element[i]].toFixed(4);
-    } else if (results[element[i]] != null && typeof results[element[i]] != 'number') {
-      key.innerHTML = results[element[i]];
-    } else {
-      key.innerHTML = "N/A";
-    }
-  }
-  //console.log(results);
-  const betaDeg = results['Beta'];
-  const beta = deg2rad(results['Beta']);
+
   const thetaDeg = parseFloat(thetaNum.value) || 10;
   const M = parseFloat(Minput.value) || 2.5;
   const gamma = parseFloat(gammaInput.value) || 1.4;
   const streamCount = Math.max(3, Math.min(21, parseInt(streamCountInput.value,10) || 9));
   const theta = deg2rad(thetaDeg);
 
-
+  // compute beta
+  const branch = branchStrong.checked ? 'strong' : 'weak';
+  const sol = solveBeta(M, theta, gamma, branch);
+  let betaDeg = 30;
+  if(!sol.converged){
+    const msg = document.createElementNS('http://www.w3.org/2000/svg','text');
+    msg.setAttribute('x', 520); msg.setAttribute('y', -220);
+    msg.setAttribute('class','muted'); msg.setAttribute('text-anchor','middle');
+    msg.textContent = sol.message + (sol.thetaMax ? ` (θ_max ≈ ${rad2deg(sol.thetaMax).toFixed(2)}°)` : '');
+    labelsG.appendChild(msg);
+    betaDeg = parseFloat(betaNum.value) || 30;
+  } else {
+    betaDeg = rad2deg(sol.beta);
+    betaNum.value = betaDeg.toFixed(3);
+  }
+  const beta = deg2rad(betaDeg);
 
   // geometry
   const originX = 220, originY = 0;
@@ -148,12 +235,12 @@ function drawDiagram(){
   const shockMaxY = Math.max(originY, shockY2);
 
   // streamlines: spawn only if upstream y is above or equal to shockMaxY (i.e., not below lowest point)
-  const spacing = 20;
+  const spacing = 22;
   const startX = -40;
   const downstreamLen = 420;
 
-  for (let i = 0; i <= streamCount; i++) {
-    const y = (i - streamCount) * spacing;
+  for (let i = 0; i < streamCount; i++) {
+    const y = (i - Math.floor(streamCount / 2)) * spacing;
     // skip any streamline whose upstream y is below the lowest point of the shock
     if (y > shockMaxY) continue;
 
@@ -249,31 +336,22 @@ function drawDiagram(){
   arc.setAttribute('d', arcPath); arc.setAttribute('stroke','#333'); arc.setAttribute('stroke-width',1.2); arc.setAttribute('fill','none');
   ann.appendChild(arc);
   const betaLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
-  betaLabel.setAttribute('x', 225);
-  betaLabel.setAttribute('y', 20);
+  betaLabel.setAttribute('x', originX + arcR * Math.cos(shockAngle/2) + 6);
+  betaLabel.setAttribute('y', originY + arcR * Math.sin(shockAngle/2) - 6);
   betaLabel.setAttribute('class','muted'); betaLabel.textContent = `β ${betaDeg.toFixed(3)}°`;
   ann.appendChild(betaLabel);
 
-  const thetaArcR = 200;
-  const thetaArcStartX = originX + thetaArcR * Math.cos(0);
-  const thetaArcStartY = originY + thetaArcR * Math.sin(0);
-  const thetaArcEndX = originX + thetaArcR * Math.cos(-theta);
-  const thetaArcEndY = originY + thetaArcR * Math.sin(-theta);
-  const thetaArcPath = `M ${thetaArcStartX} ${thetaArcStartY} A ${thetaArcR} ${thetaArcR} 0 0 0 ${thetaArcEndX} ${thetaArcEndY}`;
-  const thetaArc = document.createElementNS('http://www.w3.org/2000/svg','path');
-  thetaArc.setAttribute('d', thetaArcPath); thetaArc.setAttribute('stroke','#333'); thetaArc.setAttribute('stroke-width',1.2); thetaArc.setAttribute('fill','none');
-  ann.appendChild(thetaArc);
   const thetaLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
-  thetaLabel.setAttribute('x', 390); thetaLabel.setAttribute('y', 20);
+  thetaLabel.setAttribute('x', 260); thetaLabel.setAttribute('y', 36);
   thetaLabel.setAttribute('class','muted'); thetaLabel.textContent = `θ ${thetaDeg.toFixed(3)}°`;
   ann.appendChild(thetaLabel);
 
   const m1 = document.createElementNS('http://www.w3.org/2000/svg','text');
   m1.setAttribute('x', 60); m1.setAttribute('y', -240);
-  m1.setAttribute('class','muted'); m1.textContent = `Mach = ${M.toFixed(2)}`;
+  m1.setAttribute('class','muted'); m1.textContent = `M = ${M.toFixed(2)}`;
   ann.appendChild(m1);
   const gLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
-  gLabel.setAttribute('x', 60); gLabel.setAttribute('y', -220);
+  gLabel.setAttribute('x', 980); gLabel.setAttribute('y', -240);
   gLabel.setAttribute('class','muted'); gLabel.textContent = `γ = ${gamma.toFixed(2)}`;
   ann.appendChild(gLabel);
 }
@@ -302,17 +380,16 @@ function drawDebugArrow(x,y,dx,dy){
   debugG.appendChild(l);
 }
 
-[streamCountInput, showControl].forEach((el, i) => {
-  console.log(i, el);
-});
-
-
 /* events */
 drawBtn.addEventListener('click', drawDiagram);
-[streamCountInput, showControl, branchStrong, branchWeak].forEach(el=>{
+[thetaRange, thetaNum, Minput, gammaInput, streamCountInput, showControl, branchWeak, branchStrong].forEach(el=>{
   el.addEventListener('input', drawDiagram);
 });
 
-
 /* initial draw */
 drawDiagram();
+</script>
+</body>
+</html>
+
+

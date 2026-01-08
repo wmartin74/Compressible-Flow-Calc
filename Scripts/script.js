@@ -25,6 +25,10 @@ document.querySelectorAll('input[type="submit"]').forEach(button => {
         console.log('Nozzle Regims button clicked');
         event.preventDefault();
         window.location.href = "./Pages/nozzles.html";
+      } else if (this.value === 'test') {
+        console.log('Test button clicked');
+        event.preventDefault();
+        window.location.href = "./Pages/testpage.html";
       }
     });
   });
