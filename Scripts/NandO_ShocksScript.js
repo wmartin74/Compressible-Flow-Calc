@@ -19,47 +19,6 @@ function Press_jump(mach,p1) {
 }
 
 /**
-function beta_solver(mach,theta,gamma) {
-  mu = Math.asin(1/mach);
-  function f(beta) {
-    return 2*(1/Math.tan(beta))*((mach**2 * Math.sin(beta)**2 - 1)/(mach**2 * (gamma + Math.cos(2*beta)) + 2)) - Math.tan(theta);
-  }
-
-  function fprime(beta) {
-    const numerator = 2*(2*mach**2 * beta * Math.cos(beta**2) *Math.tan(beta)* (mach**2*(gamma + Math.cos(2*beta)) + 2) - ((1/Math.cos(beta))**2 * (mach**2 * (gamma + Math.cos(2*beta))+2) - 2*mach**2 * Math.sin(2*beta)*Math.tan(beta))*(mach**2 * Math.sin(beta**2) - 1));
-    const denominator = Math.tan(beta)**2 * Math.pow(mach**2 * (gamma + Math.cos(2*beta)) +2,2);
-    return numerator/denominator - (1/Math.cos(beta))**2;
-  }
-
-  function residual(beta,target) {
-    return f(beta) - target;
-  }
-
-  function NewtonSolver(target, x0, tol = 1e-5, maxIter = 10000) {
-    let beta = x0;
-
-    for (let i = 0; i < maxIter; i++) {
-      const r = residual(beta, target);
-      const rprime = fprime(beta);
-
-      if (Math.abs(rprime) < 1e-8) {
-        console.error("Derivative too small; no convergence.");
-        break;
-      }
-      const delta = r / rprime;
-      beta -= delta;
-
-      if (Math.abs(delta) < tol && delta > 0) return beta;
-    }
-    console.warn('Iteration ',i,': f(x) = ',f(beta),' x = ',{beta});
-    //console.error("Max iterations reached; no convergence.");
-    return null;
-  }
-  return beta = NewtonSolver(theta, mu);
-}
-*/
-
-/**
  * Solve for oblique shock beta (radians) given M, theta (radians), gamma.
  * Returns { beta, converged, iterations, message }.
  */
