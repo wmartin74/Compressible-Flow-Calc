@@ -52,6 +52,8 @@ const debugG = svg.getElementById('debug');
 function deg2rad(d){ return d * Math.PI / 180; }
 function rad2deg(r){ return r * 180 / Math.PI; }
 
+function bindRangeNumber(rangeEl, numEl){ rangeEl.addEventListener('input', ()=>{ numEl.value = rangeEl.value; drawDiagram(); }); numEl.addEventListener('input', ()=>{ rangeEl.value = numEl.value; drawDiagram(); }); }
+bindRangeNumber(streamSlide, streamCount);
 
 
 /* helpers */
@@ -107,12 +109,12 @@ function drawDiagram(){
   const shockMaxY = Math.max(originY, shockY2);
 
   // streamlines: spawn only if upstream y is above or equal to shockMaxY (i.e., not below lowest point)
-  const spacing = 22;
+  const spacing = 20;
   const startX = -40;
   const downstreamLen = 420;
 
-  for (let i = 0; i < streamCount; i++) {
-    const y = (i - Math.floor(streamCount / 2)) * spacing;
+  for (let i = 0; i <= streamCount; i++) {
+    const y = (i - streamCount) * spacing;
     // skip any streamline whose upstream y is below the lowest point of the shock
     if (y > shockMaxY) continue;
 
@@ -208,13 +210,22 @@ function drawDiagram(){
   arc.setAttribute('d', arcPath); arc.setAttribute('stroke','#333'); arc.setAttribute('stroke-width',1.2); arc.setAttribute('fill','none');
   ann.appendChild(arc);
   const betaLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
-  betaLabel.setAttribute('x', originX + arcR * Math.cos(shockAngle/2) + 6);
-  betaLabel.setAttribute('y', originY + arcR * Math.sin(shockAngle/2) - 6);
+  betaLabel.setAttribute('x', 225);
+  betaLabel.setAttribute('y', 20);
   betaLabel.setAttribute('class','muted'); betaLabel.textContent = `β ${betaDeg.toFixed(3)}°`;
   ann.appendChild(betaLabel);
 
+  const thetaArcR = 200;
+  const thetaArcStartX = originX + thetaArcR * Math.cos(0);
+  const thetaArcStartY = originY + thetaArcR * Math.sin(0);
+  const thetaArcEndX = originX + thetaArcR * Math.cos(-theta);
+  const thetaArcEndY = originY + thetaArcR * Math.sin(-theta);
+  const thetaArcPath = `M ${thetaArcStartX} ${thetaArcStartY} A ${thetaArcR} ${thetaArcR} 0 0 0 ${thetaArcEndX} ${thetaArcEndY}`;
+  const thetaArc = document.createElementNS('http://www.w3.org/2000/svg','path');
+  thetaArc.setAttribute('d', thetaArcPath); thetaArc.setAttribute('stroke','#333'); thetaArc.setAttribute('stroke-width',1.2); thetaArc.setAttribute('fill','none');
+  ann.appendChild(thetaArc);
   const thetaLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
-  thetaLabel.setAttribute('x', 260); thetaLabel.setAttribute('y', 36);
+  thetaLabel.setAttribute('x', 390); thetaLabel.setAttribute('y', 20);
   thetaLabel.setAttribute('class','muted'); thetaLabel.textContent = `θ ${thetaDeg.toFixed(3)}°`;
   ann.appendChild(thetaLabel);
 

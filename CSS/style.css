@@ -1,3 +1,5 @@
+:root{--text:#536878; --bg:#f0f6fb;--flow:#1f6fb2;--shock:#d9534f;--muted:#374151;--panel:#fff}
+
 body {
     padding: 2rem;
     background-color: #708090;
@@ -70,7 +72,7 @@ input[type=submit] {
 .panel {
     width:100%;
     max-width:75rem;
-    background:#fff;
+    background:var(--panel);
     padding:1rem;
     border-radius:2rem;
     box-shadow: 0rem 2rem 4rem rgba(15,23,42,0.08);
@@ -78,7 +80,7 @@ input[type=submit] {
 
 .panel h1 {
     font-size: 1.5rem;
-    color: #374151;
+    color: var(--text);
 }
 
 svg{
@@ -88,3 +90,16 @@ svg{
     border-radius:6px;
     background:linear-gradient(180deg,#fff,#f7fbff)
 }
+
+.legend {
+    display:flex;
+    gap:12px;
+    margin-top:8px;
+    align-items:center;
+    color: #374151;
+}
+.muted{fill:var(--muted);font-size:0.85rem;font-weight:600}
+
+.sw{width:18px;height:10px;border-radius:2px;display:inline-block}
+.sw.flow{background:var(--flow)}
+.sw.shock{background:var(--shock)}
