@@ -36,13 +36,14 @@
         <div><span class="sw shock"></span> <span class="muted">Shock line</span></div>
     </div>
     <div class="legend" style="display:flex;gap:8px;align-items:center">
-        <label style="display:flex;align-items:center;gap:6px"><input id="branchWeak" type="radio" name="branch" value="weak" checked> <span class="muted">Weak</span></label>
-        <label style="display:flex;align-items:center;gap:6px"><input id="branchStrong" type="radio" name="branch" value="strong"> <span class="muted">Strong</span></label>
+        <label style="display:flex;align-items:center;gap:6px"><input id="branchWeak" type="radio" name="branch" value="weak"> <span class="muted">Weak</span></label>
+        <label style="display:flex;align-items:center;gap:6px"><input id="branchStrong" type="radio" name="branch" value="strong" checked> <span class="muted">Strong</span></label>
+    
+      <button id="drawBtn">Draw</button>
+      <input id="showControl" type="checkbox" /> <span class="muted">Show control points</span>
+      <input id="streamSlide" type="range" min="0" max="10" value="8" step="1">
+      <input id="streamCount" type="number" min="3" max="10" value="8" step="1">
     </div>
-    <button id="drawBtn">Draw</button>
-    <input id="showControl" type="checkbox" /> <span class="muted">Show control points</span>
-    <input id="streamSlide" type="range" min="0" max="10" value="8" step="1">
-    <input id="streamCount" type="number" min="3" max="10" value="8" step="1">
   </div>
   <div>
     <p>Solution : </p>

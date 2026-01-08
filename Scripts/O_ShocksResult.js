@@ -3,6 +3,23 @@ results = JSON.parse(localStorage.getItem("ShockAnalysis"));
 console.log("Results Loaded");
 console.log(results);
 
+const thetaNum = results['Theta'];
+const Minput = results['Mach1'];
+const gammaInput = 1.4;
+const streamCountInput = document.getElementById('streamCount');
+const showControl = document.getElementById('showControl');
+const drawBtn = document.getElementById('drawBtn');
+const branchWeak = document.getElementById('branchWeak');
+const branchStrong = document.getElementById('branchStrong');
+const svg = document.getElementById('svg');
+const gridG = svg.getElementById('grid');
+const streamG = svg.getElementById('streamlines');
+const shockG = svg.getElementById('shock');
+const labelsG = svg.getElementById('labels');
+const debugG = svg.getElementById('debug');
+const solStrong = results['StrongShock'];
+const solWeak = results['WeakShock']; 
+
 let element = [
   'Mach1',
   'Mach2',
@@ -20,6 +37,8 @@ let element = [
   'Beta'
 ];
 
+
+
 for (let i = 0; i < element.length; i++) {
   let key = document.getElementById(element[i]);
   if (results[element[i]] != null && typeof results[element[i]] == 'number') {
@@ -32,22 +51,8 @@ for (let i = 0; i < element.length; i++) {
     key.innerHTML = "N/A";
   }
 }
-  
-const thetaNum = results['Theta'];
-const Minput = results['Mach1'];
-const gammaInput = 9;
 
 
-const streamCountInput = document.getElementById('streamCount');
-const showControl = document.getElementById('showControl');
-const drawBtn = document.getElementById('drawBtn');
-
-const svg = document.getElementById('svg');
-const gridG = svg.getElementById('grid');
-const streamG = svg.getElementById('streamlines');
-const shockG = svg.getElementById('shock');
-const labelsG = svg.getElementById('labels');
-const debugG = svg.getElementById('debug');
 
 function deg2rad(d){ return d * Math.PI / 180; }
 function rad2deg(r){ return r * 180 / Math.PI; }
@@ -78,6 +83,40 @@ function drawGrid(){
 function drawDiagram(){
   clearGroups();
   drawGrid();
+  if (branchStrong.checked) {
+    for (const key in solStrong) {
+      if (!Object.prototype.hasOwnProperty.call(results, key)) continue;
+      if (Object.prototype.hasOwnProperty.call(results, key)) {
+        results[key] = solStrong[key];
+        console.log('Changes results.',key,'=', solStrong[key]);
+      } else {
+        console.log('No Match for: ',key);
+      }
+    }
+  } else if (branchWeak.checked) {
+    for (const key in solWeak) {
+      if (!Object.prototype.hasOwnProperty.call(results, key)) continue;
+      if (Object.prototype.hasOwnProperty.call(results, key)) {
+        results[key] = solWeak[key];
+        console.log('Changes results.',key,'=', solWeak[key]);
+      } else {
+        console.log('No Match for: ', key);
+      }
+    }
+  }
+  for (let i = 0; i < element.length; i++) {
+    let key = document.getElementById(element[i]);
+    if (results[element[i]] != null && typeof results[element[i]] == 'number') {
+      console.log('key', key);
+      console.log(results[element[i]]);
+      key.innerHTML = results[element[i]].toFixed(4);
+    } else if (results[element[i]] != null && typeof results[element[i]] != 'number') {
+      key.innerHTML = results[element[i]];
+    } else {
+      key.innerHTML = "N/A";
+    }
+  }
+  //console.log(results);
   const betaDeg = results['Beta'];
   const beta = deg2rad(results['Beta']);
   const thetaDeg = parseFloat(thetaNum.value) || 10;
@@ -231,10 +270,10 @@ function drawDiagram(){
 
   const m1 = document.createElementNS('http://www.w3.org/2000/svg','text');
   m1.setAttribute('x', 60); m1.setAttribute('y', -240);
-  m1.setAttribute('class','muted'); m1.textContent = `M = ${M.toFixed(2)}`;
+  m1.setAttribute('class','muted'); m1.textContent = `Mach = ${M.toFixed(2)}`;
   ann.appendChild(m1);
   const gLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
-  gLabel.setAttribute('x', 980); gLabel.setAttribute('y', -240);
+  gLabel.setAttribute('x', 60); gLabel.setAttribute('y', -220);
   gLabel.setAttribute('class','muted'); gLabel.textContent = `γ = ${gamma.toFixed(2)}`;
   ann.appendChild(gLabel);
 }
@@ -270,7 +309,7 @@ function drawDebugArrow(x,y,dx,dy){
 
 /* events */
 drawBtn.addEventListener('click', drawDiagram);
-[streamCountInput, showControl].forEach(el=>{
+[streamCountInput, showControl, branchStrong, branchWeak].forEach(el=>{
   el.addEventListener('input', drawDiagram);
 });
 
