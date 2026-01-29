@@ -227,7 +227,7 @@ function drawDiagram(){
 
     // cubic path that crosses the shock and continues downstream (but not below shockMaxY)
     const pathFull = `M ${upstreamX} ${y} L ${xIntersect} ${y} C ${c1x} ${c1y} ${c2x} ${c2y} ${finalXDown} ${finalYDown}`;
-    appendStreamPath(pathFull);
+    appendStreamPath(pathFull, true);
 
     if (showControl.checked) {
       drawDebugPoint(xIntersect, yIntersect);
@@ -279,13 +279,13 @@ function drawDiagram(){
 }
 
 /* helpers to append path and debug markers */
-function appendStreamPath(d){
+function appendStreamPath(d, arrow = false){
   const p = document.createElementNS('http://www.w3.org/2000/svg','path');
   p.setAttribute('d', d);
   p.setAttribute('fill', 'none');
   p.setAttribute('stroke', '#1f6fb2');
   p.setAttribute('stroke-width', 2);
-  p.setAttribute('marker-end', 'url(#arrow)');
+  if (arrow) {p.setAttribute('marker-end', 'url(#arrow)');}
   streamG.appendChild(p);
 }
 function drawDebugPoint(x,y,color='#111'){

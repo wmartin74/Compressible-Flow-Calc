@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expansion Shock</title>
     <link rel="stylesheet" href="../CSS/style.css">
-
+    
 </head>
 <body>
-    <h1>Shock Expansion Calculator</h1>
-    <p>Numbers</p>
+    <h1>Expansion Calculator</h1>
+    <div class="panel" role="region" arie-label="Expansion panel">
+      <header>
+        <h1>Expansion Graph</h1>
+      </header>
+      <div class="svg-wrap" style="margin-top:12px">
+        <svg id="svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Expansion Graph">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f6fb2"></path>
+            </marker>
+          </defs>
+
+          <g id="grid" opacity="0.25" stroke="#9fb3c6" stroke-width="0.5"></g>
+          <g id="streamlines" transform="translate(40,280)"></g>
+          <g id="fanlines" transform="translate(40,280)"></g>
+          <g id="wall" transform="translate(40,280)"></g>
+          <g id="labels" transform="translate(40,280)"></g>
+        </svg>
+      </div>
+      <div>
+        <button id="drawBtn">Draw</button>
+      </div>
+    </div>
+
   <a href = "./expansion.html">Return</a>
   
 </body>
+<script src="../Scripts/expansionResults.js" defe></script>

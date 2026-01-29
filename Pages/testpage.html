@@ -388,6 +388,71 @@ drawBtn.addEventListener('click', drawDiagram);
 
 /* initial draw */
 drawDiagram();
+
+
+const spacing = 20;
+const startX = -40;
+const downStreamLen = 420;
+
+const streamCount = 9;
+
+for (let i = 0; i <= streamCount; i++) {
+  const y = (i - streamCount) * spacing - 22;
+
+  const upstreamX = Math.max(startX, -200);
+
+  // compute intersection t along fan ray; check sin, not cos
+  let tIntersect1;
+  if (Math.abs(Math.sin(fanAngle1)) < 1e-9) {
+    tIntersect1 = 20; // fallback if ray is nearly horizontal
+  } else {
+    tIntersect1 = (y - originY) / Math.sin(fanAngle1);
+  }
+
+  // clamp tIntersect to be between 0 and fanLen
+  tIntersect1 = Math.max(0, Math.min(fanLen, tIntersect1));
+
+  const xIntersect1 = originX + tIntersect1 * Math.cos(fanAngle1);
+  const yIntersect1 = originY + tIntersect1 * Math.sin(fanAngle1);
+
+  // ensure intersection is to the right of upstream start
+  const minIntersectX1 = upstreamX + 6;
+  if (xIntersect1 <= minIntersectX1) {
+    // draw a short upstream segment and skip downstream/arc
+    const stopX = upstreamX + 6;
+    const pathUpShort = `M ${upstreamX} ${y} L ${stopX} ${y}`;
+    appendStreamPath(pathUpShort);
+    continue; // important: skip the rest for this streamline
+  }
+
+  // upstream segment (ends at shock intersection)
+  const pathUp = `M ${upstreamX} ${y} L ${xIntersect1} ${y}`;
+  appendStreamPath(pathUp);
+
+  // radius: distance from origin to the horizontal line y (always positive)
+  const r = Math.abs(y - originY);
+
+  // compute arc endpoints on the circle of radius r centered at origin
+  const arcStartX = originX + r * Math.cos(fanAngle1);
+  const arcStartY = originY + r * Math.sin(fanAngle1);
+  const arcEndX = originX + r * Math.cos(fanAngle2);
+  const arcEndY = originY + r * Math.sin(fanAngle2);
+
+  // choose sweep flag so arc goes the shorter way between angles
+  // if fanAngle2 > fanAngle1 we want sweep=1 (clockwise) or 0 depending on coordinate system;
+  // here we compute delta and pick sweep accordingly
+  let delta = (fanAngle2 - fanAngle1) % (2 * Math.PI);
+  if (delta < 0) delta += 2 * Math.PI;
+  const largeArcFlag = delta > Math.PI ? 1 : 0;
+  const sweepFlag = 1; // try 1; flip to 0 if arc goes the wrong direction in your coordinate system
+
+  const originObj = { originX: originX, originY: originY };
+
+  // Use absolute radius values in the arc command
+  const arcPath = `M ${arcStartX} ${arcStartY} A ${r} ${r} 0 ${largeArcFlag} ${sweepFlag} ${arcEndX} ${arcEndY}`;
+  appendStreamPath(arcPath, true, false, originObj);
+}
+
 </script>
 </body>
 </html>
