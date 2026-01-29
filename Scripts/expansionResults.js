@@ -28,10 +28,11 @@ function runscript() {
   // Geometry
   const originX = 220, originY = 0;
   const fanLen = 500;
+  const fan2_add = 100;
   const fanAngle1 = -mu1;
   const fanAngle2 = deg2rad(data['Theta']) - mu2;
   const fan1x = originX + fanLen * Math.cos(fanAngle1), fan1y = originY + fanLen * Math.sin(fanAngle1);
-  const fan2x = originX + (fanLen + 250) * Math.cos(fanAngle2), fan2y = originY + (fanLen + 250) * Math.sin(fanAngle2);
+  const fan2x = originX + (fanLen + fan2_add) * Math.cos(fanAngle2), fan2y = originY + (fanLen + fan2_add) * Math.sin(fanAngle2);
   
   
   const fan1 = {anlge:fanAngle1, xEnd:fan1x, yEnd:fan1y};
@@ -71,7 +72,7 @@ function runscript() {
   
 
     let tIntersect2 = (y - originY) / Math.sin(fanAngle2);
-    tIntersect2 = Math.max(0, Math.min((fanLen + 250), tIntersect2));
+    tIntersect2 = Math.max(0, Math.min((fanLen + fan2_add), tIntersect2));
     console.log('tIntersect2', tIntersect2);
     
     const xIntersect1 = originX + tIntersect1 * Math.cos(fanAngle1);
