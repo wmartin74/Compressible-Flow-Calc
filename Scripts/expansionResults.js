@@ -28,7 +28,7 @@ function runscript() {
   // Geometry
   const originX = 220, originY = 0;
   const fanLen = 500;
-  const fan2_add = 100;
+  const fan2_add = 300;
   const fanAngle1 = -mu1;
   const fanAngle2 = deg2rad(data['Theta']) - mu2;
   const fan1x = originX + fanLen * Math.cos(fanAngle1), fan1y = originY + fanLen * Math.sin(fanAngle1);
@@ -79,8 +79,8 @@ function runscript() {
     const yIntersect1 = originY + tIntersect1 * Math.sin(fanAngle1);
     console.log('x and y intercept 1', xIntersect1, yIntersect1);
 
-    const xIntersect2 = originX + tIntersect2 * Math.cos(fanAngle2);
-    const yIntersect2 = originY + tIntersect2 * Math.sin(fanAngle2);
+    const xIntersect2 = originX + tIntersect1 * Math.cos(fanAngle2);
+    const yIntersect2 = originY + tIntersect1 * Math.sin(fanAngle2);
     console.log('x and y intercept 2', xIntersect2, yIntersect2);
     
     const midX = (xIntersect1+xIntersect2)/2 + 5;
